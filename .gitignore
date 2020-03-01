@@ -1,0 +1,16 @@
+/build/
+/dist/
+/doc/
+/coverage_html_report/
+.DS_Store
+/.idea/
+/.pytest_cache/
+/.cache/
+/.eggs/
+/.tox
+/.coverage
+/coverage
+.*.swp
+*.pyc
+*.egg-info/
+config.dox

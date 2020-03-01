@@ -1,0 +1,17 @@
+Filesystem                  1024-blocks      Used Available Capacity Mounted on
+udev                             992596         0    992596       0% /dev
+tmpfs                            201876     21120    180756      11% /run
+/dev/mapper/buster--vg-root     3845148   3027480    602628      84% /
+tmpfs                           1009368         0   1009368       0% /dev/shm
+tmpfs                              5120         0      5120       0% /run/lock
+tmpfs                           1009368         0   1009368       0% /sys/fs/cgroup
+/dev/sda2                        241965     87861    141612      39% /boot
+/dev/sda1                        523248      5220    518028       1% /boot/efi
+/dev/mapper/data-gitlab        10475520   1403552   9071968      14% /opt/gitlab
+/dev/mapper/buster--vg-home    11860220    152444  11085596       2% /home
+/dev/mapper/buster--vg-tmp       340871      2059    316694       1% /tmp
+/dev/mapper/buster--vg-var      1591976    626200    866860      42% /var
+/dev/mapper/data-docker         8378368   2295120   6083248      28% /var/lib/docker
+192.168.192.1:/Volumes/Work   976797824 976797824 392864704      72% /work
+192.168.192.1:/Volumes/Code   976797824 976797824 392864704      72% /code
+tmpfs                            201872         0    201872       0% /run/user/1085

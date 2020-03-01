@@ -1,0 +1,14 @@
+Filesystem         1024-blocks    Used    Avail Capacity iused    ifree %iused  Mounted on
+zroot/ROOT/default    17048640 1910968 15137672    11%   22021 30275344    0%   /
+devfs                        1       1        0   100%       0        0  100%   /dev
+procfs                       4       4        0   100%       1        0  100%   /proc
+zroot/tmp             15137760      88 15137672     0%      11 30275344    0%   /tmp
+zroot/usr/home        15137800     128 15137672     0%      18 30275344    0%   /usr/home
+zroot/usr/ports       15862260  724588 15137672     5%  178143 30275344    1%   /usr/ports
+zroot/usr/src         15137760      88 15137672     0%       7 30275344    0%   /usr/src
+zroot/var/audit       15137760      88 15137672     0%       9 30275344    0%   /var/audit
+zroot/var/crash       15137760      88 15137672     0%       8 30275344    0%   /var/crash
+zroot/var/log         15137892     220 15137672     0%      25 30275344    0%   /var/log
+zroot/var/mail        15137760      88 15137672     0%       8 30275344    0%   /var/mail
+zroot/var/tmp         15137760      88 15137672     0%       8 30275344    0%   /var/tmp
+zroot                 15137760      88 15137672     0%       7 30275344    0%   /zroot

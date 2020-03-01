@@ -1,0 +1,4 @@
+Filesystem  1024-blocks       Used   Available Capacity Mounted on
+/dev/wd0a       1094062     121814      917546    12%   /
+/dev/wd0e       2061054         74     1957928     0%   /home
+/dev/wd0d       3093230    3002852      -64282   102%   /usr

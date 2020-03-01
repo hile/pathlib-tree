@@ -1,0 +1,3 @@
+/dev/wd0a on / type ffs (local)
+/dev/wd0e on /home type ffs (local, nodev, nosuid)
+/dev/wd0d on /usr type ffs (local, nodev, wxallowed)
