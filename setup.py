@@ -8,7 +8,7 @@ setup(
     description='Filesystem utilities for systematic',
     author='Ilkka Tuohela',
     author_email='hile@iki.fi',
-    url='https://github.com/hile/systematic-files/',
+    url='https://git.tuohela.net/systematic-components/systematic-files',
     version=__version__,
     license='PSF',
     python_requires='>3.6.0',
