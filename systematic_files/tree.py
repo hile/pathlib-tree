@@ -13,15 +13,15 @@ class Tree(pathlib.Path):
     Extend pathlib.Path to use for filesystem tree processing
     """
     _flavour = pathlib._windows_flavour if os.name == 'nt' else pathlib._posix_flavour  # pylint: disable=W0212
-    __iter_items__ = None
-    __iter_child__ = None
-    __items__ = None
-    __iterator__ = None
 
     def __init__(self, path, create_missing=False, sorted=True, mode=None):  # pylint: disable=W0613, W0622
         self.sorted = sorted
         if create_missing and not self.exists():
             self.create(mode)
+        self.__iter_items__ = None
+        self.__iter_child__ = None
+        self.__items__ = None
+        self.__iterator__ = None
 
     def __repr__(self):
         return str(self)

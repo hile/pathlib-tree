@@ -14,7 +14,7 @@ setup(
     python_requires='>3.6.0',
     packages=find_packages(),
     install_requires=(
-        'systematic-cli>=1.0',
+        'systematic-cli>=20200320.1',
     ),
     tests_require=(
         'pytest-cov',
