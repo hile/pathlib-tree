@@ -6,19 +6,22 @@ DARWIN_VIRTUAL_FILESYSTEMS = (
 )
 
 
-class DarwinMountpointUsage(BSDMountpointUsage):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class DarwinMountpointUsage(BSDMountpointUsage):
     """
     MacOS darwin specific mountpoint usage data
     """
 
 
-class DarwinMountPointOptions(BSDMountPointOptions):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class DarwinMountPointOptions(BSDMountPointOptions):
     """
     MacOS darwin specific mountpoint options
     """
 
 
-class DarwinFilesystem(BSDFilesystem):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class DarwinFilesystem(BSDFilesystem):
     """
     MacOS darwin specific mountpoint options
     """

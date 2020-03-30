@@ -24,19 +24,22 @@ LINUX_VIRTUAL_FILESYSTEMS = (
 )
 
 
-class LinuxMountpointUsage(MountpointUsage):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class LinuxMountpointUsage(MountpointUsage):
     """
     Linux specific mountpoint usage data
     """
 
 
-class LinuxMountPointOptions(MountpointOptions):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class LinuxMountPointOptions(MountpointOptions):
     """
     Linux specific mountpoint options
     """
 
 
-class LinuxFilesystem(Filesystem):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class LinuxFilesystem(Filesystem):
     """
     Linux specific mountpoint options
     """

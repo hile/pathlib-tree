@@ -7,19 +7,22 @@ OPENBSD_VIRTUAL_FILESYSTEMS = (
 )
 
 
-class OpenBSDMountpointUsage(BSDMountpointUsage):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class OpenBSDMountpointUsage(BSDMountpointUsage):
     """
     OpenBSD specific mountpoint usage data
     """
 
 
-class OpenBSDMountPointOptions(BSDMountPointOptions):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class OpenBSDMountPointOptions(BSDMountPointOptions):
     """
     OpenBSD specific mountpoint options
     """
 
 
-class OpenBSDFilesystem(BSDFilesystem):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class OpenBSDFilesystem(BSDFilesystem):
     """
     OpenBSD specific mountpoint options
     """

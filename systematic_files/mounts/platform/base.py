@@ -2,7 +2,8 @@
 from pathlib import Path
 
 
-class MountpointOptions:  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class MountpointOptions:
     """
     Options for filesystem mount point
     """
@@ -26,7 +27,8 @@ class MountpointOptions:  # pylint: disable=R0903
         return options
 
 
-class MountpointUsage:  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class MountpointUsage:
     """
 
     Mountpoint usage stats data
@@ -56,7 +58,8 @@ class MountpointUsage:  # pylint: disable=R0903
             self.__set_value__(attr, data[attr])
 
 
-class Filesystem:  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class Filesystem:
     """
     Filesystem for a mountpoint
     """

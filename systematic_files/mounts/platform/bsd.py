@@ -7,7 +7,8 @@ BSD_VIRTUAL_FILESYSTEMS = (
 )
 
 
-class BSDMountpointUsage(MountpointUsage):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class BSDMountpointUsage(MountpointUsage):
     """
     BSD specific mountpoint usage data
     """
@@ -27,7 +28,8 @@ class BSDMountpointUsage(MountpointUsage):  # pylint: disable=R0903
                 self.__set_value__(attr, data[attr])
 
 
-class BSDMountPointOptions(MountpointOptions):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class BSDMountPointOptions(MountpointOptions):
     """
     BSD specific mountpoint options
     """
@@ -42,7 +44,8 @@ class BSDMountPointOptions(MountpointOptions):  # pylint: disable=R0903
         self.mountpoint.filesystem.name = filesystem
 
 
-class BSDFilesystem(Filesystem):  # pylint: disable=R0903
+# pylint: disable=too-few-public-methods
+class BSDFilesystem(Filesystem):
     """
     BSD specific mountpoint filesystem
 

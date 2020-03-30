@@ -12,12 +12,17 @@ class Tree(pathlib.Path):
     """
     Extend pathlib.Path to use for filesystem tree processing
     """
-    _flavour = pathlib._windows_flavour if os.name == 'nt' else pathlib._posix_flavour  # pylint: disable=W0212
+    # pylint: disable=protected-access
+    _flavour = pathlib._windows_flavour if os.name == 'nt' else pathlib._posix_flavour
 
-    def __init__(self, path, create_missing=False, sorted=True, mode=None):  # pylint: disable=W0613, W0622
+    # pylint: disable=redefined-builtin
+    # pylint: disable=unused-argument
+    def __init__(self, path, create_missing=False, sorted=True, mode=None, excluded=None):
+        self.excluded = excluded if excluded is not None else []
         self.sorted = sorted
         if create_missing and not self.exists():
             self.create(mode)
+
         self.__iter_items__ = None
         self.__iter_child__ = None
         self.__items__ = None
@@ -59,6 +64,21 @@ class Tree(pathlib.Path):
                 'Error creating directory {}: {}'.format(self, error)
             )
 
+    def remove(self, recursive=False):
+        """
+        Remove tree
+        """
+        if not recursive and len(self) > 0:
+            raise FileExistsError('Tree is not empty: {}'.format(self))
+        for item in list(self):
+            if not item.exists():
+                continue
+            if isinstance(item, Tree):
+                item.remove(recursive)
+            else:
+                item.unlink()
+        self.rmdir()
+
     def __getitem__(self, path):
         """
         Get cached path item by path
@@ -88,8 +108,10 @@ class Tree(pathlib.Path):
                 items = self.iterdir()
             self.__iter_items__ = []
             for item in items:
+                if item.name in self.excluded:
+                    continue
                 if item.is_dir():
-                    item = Tree(item)
+                    item = Tree(item, excluded=self.excluded)
                 self.__iter_items__.append(item)
                 self.__items__[str(item)] = item
             self.__iterator__ = itertools.chain(self.__iter_items__)
@@ -106,7 +128,7 @@ class Tree(pathlib.Path):
 
             item = next(self.__iterator__)
             if item.is_dir():
-                self.__iter_child__ = Tree(item, sorted=self.sorted)
+                self.__iter_child__ = Tree(item, sorted=self.sorted, excluded=self.excluded)
                 self.__items__[str(self.__iter_child__)] = self.__iter_child__
             else:
                 item = pathlib.Path(item)
