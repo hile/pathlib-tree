@@ -63,7 +63,7 @@ def test_tree_search_filter():
     tree = Tree(path)
     assert tree.exists()
 
-    assert len(tree.filter('foo')) == 1
+    assert len(tree.filter('foo')) == 4
     assert len(tree.filter('foo/*')) == 3
     assert len(tree.filter(['a', 'b'])) == 2
     assert len(tree.filter(['a*', '*.tst'])) == 4
@@ -80,7 +80,7 @@ def test_tree_search_exclude():
     tree = Tree(path)
     assert tree.exists()
 
-    assert len(tree.exclude('foo')) == 11
+    assert len(tree.exclude('foo')) == 8
     assert len(tree.exclude('foo/*')) == 9
     assert len(tree.exclude(['a', 'b'])) == 10
     for item in tree.exclude(['a', 'b']):
@@ -95,5 +95,5 @@ def test_tree_search_chaining():
     tree = Tree(path)
     assert tree.exists()
 
-    assert len(tree.exclude('foo').filter('a*')) == 2
-    assert len(tree.filter('a*').exclude('foo')) == 2
+    assert len(tree.exclude('foo').filter('a*')) == 1
+    assert len(tree.filter('a*').exclude('foo')) == 1

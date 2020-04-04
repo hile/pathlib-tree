@@ -1,6 +1,8 @@
 
 MODULE := systematic_files
 VERSION := $(shell awk '/^__version__/ {print $$3}' ${MODULE}/version.py)
+SPHINX_FLAGS := -b html ./docs/source docs/html
+SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MODULE}
 
 all: lint test
 
@@ -12,6 +14,15 @@ clean:
 
 build:
 	python setup.py build
+
+doc-devel:
+	export PYTHONPATH=${ROOT_DIR}
+	oedibus generate .
+	sphinx-autobuild ${SPHINX_WEBSITE_FLAGS} ${SPHINX_FLAGS}
+
+doc:
+	export PYTHONPATH=${ROOT_DIR}
+	sphinx-build ${SPHINX_FLAGS}
 
 lint:
 	pylint ${MODULE} tests setup.py
