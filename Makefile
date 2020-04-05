@@ -1,6 +1,6 @@
 
 MODULE := systematic_files
-VERSION := $(shell awk '/^__version__/ {print $$3}' ${MODULE}/version.py)
+VERSION := $(shell awk '/^__version__/ {print $$3}' ${MODULE}/__init__.py)
 SPHINX_FLAGS := -b html ./docs/source docs/html
 SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MODULE}
 

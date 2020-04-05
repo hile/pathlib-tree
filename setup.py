@@ -1,6 +1,6 @@
 
 from setuptools import setup, find_packages
-from systematic_files.version import __version__
+from systematic_files import __version__
 
 setup(
     name='systematic-files',
@@ -14,7 +14,7 @@ setup(
     python_requires='>3.6.0',
     packages=find_packages(),
     install_requires=(
-        'systematic-cli>=20200320.1',
+        'systematic-cli>=20200405.1',
     ),
     tests_require=(
         'pytest-cov',

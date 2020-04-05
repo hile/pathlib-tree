@@ -38,6 +38,7 @@ def test_match_simple_patterns_direct_match():
         '/test/other files/filename.txt'
     )
 
+
 def test_match_simple_patterns():
     """
     Test simple relative tree pattern match case
@@ -82,6 +83,9 @@ def test_match_prefix_glob_match():
 
 
 def test_match_relative_pattern():
+    """
+    Test matching a relative path pattern
+    """
     patterns = (
         'other */*.wav',
         '*/*.txt',
