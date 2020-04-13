@@ -1,6 +1,7 @@
 
-from systematic_files import __version__
 from systematic_cli.tests import validate_version_string
+
+from systematic_files import __version__
 
 
 def test_version_string():
