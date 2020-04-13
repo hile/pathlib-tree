@@ -1,0 +1,9 @@
+targets:
+  excludes:
+    source: /home
+    destination: /cloned
+    ignore_default_flags: true
+    ignore_default_excludes: true
+    excludes:
+      - '*~'
+      - '*.sqp'

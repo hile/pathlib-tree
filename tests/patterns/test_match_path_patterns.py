@@ -1,3 +1,6 @@
+"""
+Unit tests for systematic_files.patterns functions
+"""
 
 from systematic_files.patterns import match_path_patterns
 

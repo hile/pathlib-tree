@@ -4,7 +4,7 @@ from systematic_files import __version__
 
 setup(
     name='systematic-files',
-    keywords='system management files mounts patterns',
+    keywords='system management files trees mounts patterns',
     description='Filesystem utilities for systematic',
     author='Ilkka Tuohela',
     author_email='hile@iki.fi',
@@ -13,12 +13,13 @@ setup(
     license='PSF',
     python_requires='>3.6.0',
     packages=find_packages(),
+    entry_points={
+        'console_scripts': [
+            'treesync=systematic_files.bin.treesync.main:main',
+        ],
+    },
     install_requires=(
-        'systematic-cli>=20200405.1',
-    ),
-    tests_require=(
-        'pytest-cov',
-        'pytest-datafiles',
+        'systematic-cli>=20200413.1',
     ),
     classifiers=[
         'Environment :: Console',

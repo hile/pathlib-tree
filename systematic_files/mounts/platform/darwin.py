@@ -1,3 +1,6 @@
+"""
+MacOS Darwin mountpoints
+"""
 
 from .bsd import BSDMountpoint, BSDFilesystem, BSDMountPointOptions, BSDMountpointUsage
 

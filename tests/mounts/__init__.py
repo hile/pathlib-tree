@@ -26,7 +26,6 @@ class MountpointTestCase(unittest.TestCase):
         Load data file with fake mount command output
         """
         datafile = Path(__file__).absolute().parent.joinpath('data', self.platform, 'mount')
-        print('read mock data', datafile)
         with open(datafile, 'r') as filedescriptor:
             return filedescriptor.readlines()
 
@@ -35,7 +34,6 @@ class MountpointTestCase(unittest.TestCase):
         Load data file with fake df command output
         """
         datafile = Path(__file__).absolute().parent.joinpath('data', self.platform, 'df')
-        print('read mock data', datafile)
         with open(datafile, 'r') as filedescriptor:
             return filedescriptor.readlines()
 
@@ -184,12 +182,7 @@ class MountpointTestCase(unittest.TestCase):
         if mountpoint.usage.size is not None:
             for counter in counters:
                 value = getattr(mountpoint.usage, counter)
-                assert isinstance(value, int), \
-                    'error verifying normal mountpoint {} usage {} value {}'.format(
-                        mountpoint,
-                        counter,
-                        value
-                    )
+                assert isinstance(value, int)
 
             assert mountpoint.usage.size >= mountpoint.usage.used
             assert mountpoint.usage.size >= mountpoint.usage.available

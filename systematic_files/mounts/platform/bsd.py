@@ -1,3 +1,6 @@
+"""
+Generic BSD mountpoints (FreeBSD, MacOS)
+"""
 
 from .base import Mountpoint, Filesystem, MountpointOptions, MountpointUsage
 

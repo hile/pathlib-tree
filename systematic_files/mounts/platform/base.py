@@ -82,7 +82,7 @@ class Filesystem:
 
 class Mountpoint:
     """
-    Single filesystem mount point
+    Filesystem mount point linked to Mountpoints
     """
     filesystem_class = Filesystem
     options_class = MountpointOptions
@@ -103,7 +103,7 @@ class Mountpoint:
         self.usage = self.usage_class(self)
 
     def __repr__(self):
-        return '{} mounted on {}'.format(self.device, self.mountpoint)
+        return f'{self.device} mounted on {self.mountpoint}'
 
     @property
     def name(self):

@@ -1,3 +1,6 @@
+"""
+OpenBSD mounpoints
+"""
 
 from .bsd import BSDMountpoint, BSDFilesystem, BSDMountPointOptions, BSDMountpointUsage
 

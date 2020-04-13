@@ -1,0 +1,9 @@
+targets:
+  converted:
+    source: /home
+    destination: /cloned
+    iconv: UTF-8-MAC,UTF-8
+    ignore_default_flags: true
+    flags:
+      --archive
+      --delete

@@ -1,3 +1,6 @@
+"""
+Unit tests for linux mountpoints
+"""
 
 from systematic_files.mounts.platform.linux import (
     LinuxMountPoint,

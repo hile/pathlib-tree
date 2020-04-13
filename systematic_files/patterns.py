@@ -1,3 +1,6 @@
+"""
+Pattern matching for filesystem trees
+"""
 
 import os
 import fnmatch

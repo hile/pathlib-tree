@@ -1,3 +1,6 @@
+"""
+Unit tests for unknown platform mountpoints
+"""
 
 from unittest import mock
 from unittest.mock import patch

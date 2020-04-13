@@ -13,4 +13,6 @@
 .*.swp
 *.pyc
 *.egg-info/
+pytestdebug.log
+coverage.xml
 config.dox

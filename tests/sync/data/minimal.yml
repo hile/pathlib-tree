@@ -1,0 +1,6 @@
+defaults:
+  tree_excludes_file:
+targets:
+  minimal:
+    source: /home
+    destination: /cloned

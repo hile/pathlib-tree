@@ -89,7 +89,7 @@ class Mountpoints(list):
         elif self.__platform__ == 'openbsd':
             self.__mountpoint_class__ = OpenBSDMountPoint
         else:
-            raise FilesystemError('Unsupported OS platform: {}'.format(self.__platform__))
+            raise FilesystemError(f'Unsupported OS platform: {self.__platform__}')
 
     def __initialize_toolchain_based_data__(self):
         """
@@ -108,7 +108,7 @@ class Mountpoints(list):
             self.__re_df_patterns__ = RE_GNU_DF_LINE
 
         else:
-            raise FilesystemError('Unexpected toolchain detected: {}'.format(self.__toolchain__))
+            raise FilesystemError(f'Unexpected toolchain detected: {self.__toolchain__}')
 
     @staticmethod
     def __match_pattern_list__(lines, patterns):

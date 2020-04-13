@@ -1,3 +1,6 @@
+"""
+Unit tests for OpenBSD mountpoints
+"""
 
 from systematic_files.mounts.platform.openbsd import (
     OpenBSDMountPoint,

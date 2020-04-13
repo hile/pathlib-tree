@@ -1,6 +1,8 @@
+"""
+Unit tests for systematic_files.tree.Tree searches
+"""
 
 import os
-import tempfile
 
 from pathlib import Path
 
@@ -34,7 +36,7 @@ TEST_DIRECTORY_DATA = [
 ]
 
 
-def create_test_directory():
+def create_test_directory(tmpdir):
     """
     Create test directory for filtering searches
     """
@@ -49,17 +51,16 @@ def create_test_directory():
                 with open(filename, 'w') as filedescriptor:
                     filedescriptor.write('\n')
 
-    tempdir = tempfile.mkdtemp()
     for item in TEST_DIRECTORY_DATA:
-        create_directory_items(tempdir, item)
-    return tempdir
+        create_directory_items(tmpdir, item)
+    return tmpdir
 
 
-def test_tree_search_filter():
+def test_tree_search_filter(tmpdir):
     """
     Test simple filtering files from tree
     """
-    path = create_test_directory()
+    path = create_test_directory(tmpdir)
     tree = Tree(path)
     assert tree.exists()
 
@@ -72,11 +73,11 @@ def test_tree_search_filter():
         assert isinstance(item, (Tree, Path))
 
 
-def test_tree_search_exclude():
+def test_tree_search_exclude(tmpdir):
     """
     Test simple filtering files from tree
     """
-    path = create_test_directory()
+    path = create_test_directory(tmpdir)
     tree = Tree(path)
     assert tree.exists()
 
@@ -87,11 +88,11 @@ def test_tree_search_exclude():
         assert isinstance(item, (Tree, Path))
 
 
-def test_tree_search_chaining():
+def test_tree_search_chaining(tmpdir):
     """
     Test chaininng of filtering files from tree
     """
-    path = create_test_directory()
+    path = create_test_directory(tmpdir)
     tree = Tree(path)
     assert tree.exists()
 

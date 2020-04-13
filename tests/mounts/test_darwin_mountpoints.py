@@ -1,3 +1,6 @@
+"""
+Unit tests for MacOS darwin mountpoints
+"""
 
 from systematic_files.mounts.platform.darwin import (
     DarwinMountPoint,

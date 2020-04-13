@@ -1,3 +1,6 @@
+"""
+Unit tests for BSD mountpoints
+"""
 
 from systematic_files.mounts.platform.bsd import (
     BSDMountpoint,

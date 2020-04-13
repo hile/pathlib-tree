@@ -1,4 +1,6 @@
-
+"""
+Linux mountpoints
+"""
 from .base import Mountpoint, Filesystem, MountpointOptions, MountpointUsage
 
 LINUX_VIRTUAL_FILESYSTEMS = (
