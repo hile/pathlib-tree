@@ -1,0 +1,26 @@
+---
+#
+# Gitlab CI pipeline for systematic-cli module
+#
+
+image:
+  name: hiletuohela/ci:latest
+
+stages:
+  - ci-tests
+
+lint:
+  stage: ci-tests
+  script:
+    - make lint
+
+unittest:
+  stage: ci-tests
+  script:
+    - make test
+
+  artifacts:
+    paths:
+      - coverage.xml
+    reports:
+      junit: coverage.xml
