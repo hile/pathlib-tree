@@ -193,9 +193,7 @@ class Tree(pathlib.Path):
                 items = self.iterdir()
             self.__iter_items__ = []
             for item in items:
-                if item.name in self.excluded:
-                    continue
-                if match_path_patterns(self.excluded, self, item.name):
+                if item.name in self.excluded or match_path_patterns(self.excluded, self, item.name):
                     continue
                 if item.is_dir():
                     item = Tree(item, excluded=self.excluded)
