@@ -252,7 +252,8 @@ def test_tree_invalid_path_create_with_mode_as_int(tmpdir):
     tree.rmdir()
 
 
-def test_tree_create_permission_denied(mock_path_mkdir_permission_denied):
+# pylint: disable=unused-argument
+def test_tree_create_permission_denied(mock_path_not_exists, mock_path_mkdir_permission_denied):
     """
     Test creating directory without permissions for path
     """

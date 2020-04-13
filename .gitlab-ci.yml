@@ -12,6 +12,7 @@ stages:
 lint:
   stage: ci-tests
   script:
+    - pip3 install git+https://git.tuohela.net/systematic-components/systematic-cli.git@20200413.2
     - make lint
 
 unittest:
