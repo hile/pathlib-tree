@@ -156,6 +156,23 @@ def test_tree_skipped_filenames(tmpdir):
     assert skipped_file not in tree
 
 
+def test_tree_skipped_dirnames(tmpdir):
+    """
+    Test tree with skipped directory name patterns
+    """
+    tree = Tree(tmpdir)
+
+    skipped_file = pathlib.Path(tree, 'skipped/test.yml')
+    skipped_file.parent.mkdir()
+    skipped_file.touch()
+    assert skipped_file.is_file()
+
+    tree = Tree(tmpdir, excluded=['skipped/'])
+    with pytest.raises(StopIteration):
+        next(tree)
+    assert skipped_file not in tree
+
+
 def test_tree_iterating_test_directory_sorted():
     """
     Test iterating over this test data directory as unsorted items
