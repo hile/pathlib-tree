@@ -141,7 +141,7 @@ class Tree(pathlib.Path):
     Extend pathlib.Path to use for filesystem tree processing
     """
     file_class = TreeItem
-    '''Tree item loader class for files'''
+    """Tree item loader class for files"""
 
     # pylint: disable=protected-access
     _flavour = pathlib._windows_flavour if os.name == 'nt' else pathlib._posix_flavour

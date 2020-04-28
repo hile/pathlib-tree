@@ -1,13 +1,14 @@
 
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 MODULE := systematic_files
 VERSION := $(shell awk '/^__version__/ {print $$3}' ${MODULE}/__init__.py)
-SPHINX_FLAGS := -b html ./docs/source docs/html
+SPHINX_FLAGS := -b html ./docs public
 SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MODULE}
 
 all: lint test
 
 clean:
-	@rm -rf build dist .DS_Store .pytest_cache .cache .eggs .coverage .tox coverage
+	@rm -rf build dist .DS_Store .pytest_cache .cache .eggs .tox .coverage coverage.xml htmlcov
 	@find . -name '__pycache__' -print0 | xargs -0 rm -rf
 	@find . -name '*.egg-info' -print0 | xargs -0 rm -rf
 	@find . -name '*.pyc' -print0 | xargs -0 rm -rf
@@ -17,19 +18,19 @@ build:
 
 doc-devel:
 	export PYTHONPATH=${ROOT_DIR}
-	oedibus generate .
+	vaskitsa documentation generate ${ROOT_DIR}
 	sphinx-autobuild ${SPHINX_WEBSITE_FLAGS} ${SPHINX_FLAGS}
 
 doc:
 	export PYTHONPATH=${ROOT_DIR}
+	vaskitsa documentation generate ${ROOT_DIR}
 	sphinx-build ${SPHINX_FLAGS}
 
 lint:
-	pylint ${MODULE} tests setup.py
-	flake8 | sort
+	tox -e lint
 
 test:
-	tox
+	tox -e unittest
 
 upload: clean
 	python3 setup.py sdist bdist_wheel

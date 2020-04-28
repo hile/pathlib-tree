@@ -33,7 +33,7 @@ def test_sync_configuration_empty():
     assert config.defaults is not None
 
     # Ensure system / user paths are mocked out
-    for path in config.default_paths:
+    for path in config.__default_paths__:
         assert not path.exists()
         assert not path.is_file()
 
@@ -77,8 +77,8 @@ def test_sync_target_attributes_minimal():
     assert target.settings.ignore_default_excludes is False
     assert target.settings.excludes_file is None
     assert target.settings.iconv is None
-    assert target.settings.excludes == []
-    assert target.settings.flags == []
+    assert target.settings.excludes.value == []
+    assert target.settings.flags.value == []
 
     expected_excludes = SKIPPED_PATHS + DEFAULT_EXCLUDES
     assert target.excluded == sorted(expected_excludes)

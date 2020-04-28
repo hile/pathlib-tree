@@ -22,8 +22,8 @@ class Defaults(ConfigurationSection):
     """
     Tree sync default settings
     """
-    name = 'defaults'
-    default_settings = {
+    __name__ = 'defaults'
+    __default_settings__ = {
         'rsync_command': 'rsync',
         'flags': DEFAULT_FLAGS,
         'never_sync_paths': SKIPPED_PATHS,
@@ -37,7 +37,7 @@ class TargetConfiguration(ConfigurationSection):
     """
     Loader for named targets in TargetSettings
     """
-    default_settings = {
+    __default_settings__ = {
         'ignore_default_flags': False,
         'ignore_default_excludes': False,
         'excludes': [],
@@ -45,7 +45,7 @@ class TargetConfiguration(ConfigurationSection):
         'flags': [],
         'iconv': None,
     }
-    required_settings: (
+    __required_settings__ = (
         'source',
         'destination',
     )
@@ -56,8 +56,8 @@ class TargetSettings(ConfigurationSection):
     Tree sync targets by name
     """
 
-    name = 'targets'
-    child_section_loader = TargetConfiguration
+    __name__ = 'targets'
+    __dict_loader_class__ = TargetConfiguration
 
     @property
     def names(self):
@@ -69,7 +69,7 @@ class TargetSettings(ConfigurationSection):
             section = getattr(self, attr)
             if isinstance(section, Configuration):
                 continue
-            if isinstance(section, self.child_section_loader):
+            if isinstance(section, self.__dict_loader_class__):
                 names.append(attr)
         return names
 
@@ -77,6 +77,7 @@ class TargetSettings(ConfigurationSection):
         """
         Get target by name
         """
+        print(vars(self))
         settings = getattr(self, name, None)
         if settings is None:
             raise ValueError(f'Invalid target name {name}')
@@ -87,8 +88,8 @@ class Configuration(YamlConfiguration):
     """
     Yaml configuration file for 'treesync' CLI
     """
-    default_paths = DEFAULT_CONFIGURATION_PATHS
-    configuration_section_loaders = (
+    __default_paths__ = DEFAULT_CONFIGURATION_PATHS
+    __section_loaders__ = (
         Defaults,
         TargetSettings,
     )
@@ -100,6 +101,7 @@ class Configuration(YamlConfiguration):
         """
         targets = []
         # pylint: disable=no-member
+        print('targets', type(self.targets), vars(self.targets))
         for name in self.targets.names:
             targets.append(self.get_target(name))
         return targets

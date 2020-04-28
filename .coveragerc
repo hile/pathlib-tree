@@ -1,8 +1,6 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-omit =
-    systematic_files/version.py
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -10,6 +8,3 @@ exclude_lines =
     pragma: no cover
     raise AssertionError
     raise NotImplementedError
-
-[html]
-directory = coverage_html_report

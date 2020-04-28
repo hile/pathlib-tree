@@ -1,6 +1,6 @@
 /build/
 /dist/
-/doc/
+/public/
 /coverage_html_report/
 .DS_Store
 /.idea/
@@ -8,11 +8,13 @@
 /.cache/
 /.eggs/
 /.tox
+/.vscode/
 /.coverage
-/coverage
+/htmlcov
 .*.swp
 *.pyc
 *.egg-info/
 pytestdebug.log
+unit-tests.xml
 coverage.xml
 config.dox
