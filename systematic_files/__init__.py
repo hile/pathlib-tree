@@ -1,4 +1,4 @@
 """
 Systematic module for filesystem and path handling
 """
-__version__ = '20200429.1'
+__version__ = '1.0.0'

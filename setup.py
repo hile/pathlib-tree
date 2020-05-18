@@ -19,7 +19,7 @@ setup(
         ],
     },
     install_requires=(
-        'systematic-cli>=20200429.2',
+        'systematic-cli>=1.0.0',
     ),
     classifiers=[
         'Environment :: Console',
