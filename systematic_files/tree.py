@@ -11,7 +11,7 @@ from datetime import datetime
 
 import pytz
 
-from .errors import FilesystemError
+from .exceptions import FilesystemError
 from .patterns import match_path_patterns
 from .utils import current_umask
 

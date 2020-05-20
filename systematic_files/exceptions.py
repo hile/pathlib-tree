@@ -1,3 +1,7 @@
+"""
+All exceptions in systematic_files module
+"""
+
 
 class FilesystemError(Exception):
     """

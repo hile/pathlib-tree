@@ -7,7 +7,7 @@ import re
 from systematic_cli.platform import detect_platform_family, detect_toolchain_family
 from systematic_cli.process import run_command
 
-from ..errors import FilesystemError
+from ..exceptions import FilesystemError
 from .platform.base import Mountpoint
 from .platform.bsd import BSDMountpoint
 from .platform.darwin import DarwinMountPoint
