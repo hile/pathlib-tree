@@ -4,9 +4,8 @@ Filesystem file tree
 
 import hashlib
 import itertools
-import pathlib
 import os
-
+import pathlib
 from datetime import datetime
 
 import pytz
@@ -148,10 +147,9 @@ class Tree(pathlib.Path):
 
     # pylint: disable=redefined-builtin
     # pylint: disable=unused-argument
-    def __init__(self, path, create_missing=False, sorted=True, mode=None, excluded=None):
-        self.excluded = excluded if excluded is not None else []
-        self.excluded.extend(SKIPPED_PATHS)
-        self.sorted = sorted
+    def __init__(self, path, create_missing=False, sorted=True, mode=None, excluded=None):  # noqa
+        self.excluded = self.__configure_excluded__(excluded)
+        self.sorted = sorted  # noqa
         if create_missing and not self.exists():
             self.create(mode)
 
@@ -162,6 +160,18 @@ class Tree(pathlib.Path):
 
     def __repr__(self):
         return str(self)
+
+    @staticmethod
+    def __configure_excluded__(excluded):
+        """
+        Merge excluded with skipped paths
+        """
+        if excluded is None:
+            excluded = []
+        for skipped in SKIPPED_PATHS:
+            if skipped not in excluded:
+                excluded.append(skipped)
+        return excluded
 
     def __getitem__(self, path):
         """
@@ -261,7 +271,7 @@ class Tree(pathlib.Path):
         except OSError as error:
             raise FilesystemError(f'Error creating directory {self}: {error}')
 
-    def filter(self, patterns):
+    def filter(self, patterns):  # noqa
         """
         Filter specified name patterns from tree
 
@@ -302,7 +312,7 @@ class TreeSearch(list):
         self.tree = tree
         super().__init__(items)
 
-    def filter(self, patterns):
+    def filter(self, patterns):  # noqa
         """
         Match specified patterns from matched items
         """
