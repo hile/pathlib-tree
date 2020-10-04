@@ -11,12 +11,25 @@ class TreesyncCommand(Command):
     config = None
 
     @staticmethod
-    def register_parser_arguments(parser):
+    def register_common_arguments(parser):
         """
         Add parser arguments common to all commands
         """
         parser.add_argument('--config', help='Configuration file path')
         parser.add_argument('targets', nargs='*', help='Sync command targets')
+        return parser
+
+    def register_rsync_arguments(self, parser):
+        """
+        Register arguments specific to rsync commands (pull/push)
+        """
+        parser = self.register_common_arguments(parser)
+        parser.add_argument(
+            '-y', '--dry-run',
+            action='store_true',
+            help='Run rsync with --dry-run flag'
+        )
+        return parser
 
     def parse_args(self, args):
         self.config = Configuration(args.config)

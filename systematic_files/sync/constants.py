@@ -12,6 +12,12 @@ DEFAULT_CONFIGURATION_PATHS = (
 #: Filename in source directory automatically added as rsync exclude
 DEFAULT_EXCLUDES_FILE = '.rsync.exclude'
 
+MACOS_META_EXCLUDES = [
+    '.fseventsd',
+    '.Trashes',
+    '.TemporaryItems',
+    '.Spotlight-V100',
+]
 #: Default excluded filenames and directories
 DEFAULT_EXCLUDES = [
     '.pytest_cache/',
@@ -20,13 +26,14 @@ DEFAULT_EXCLUDES = [
     '*.pyc',
     '.*.swp',
     '*~',
-]
+] + MACOS_META_EXCLUDES
 
 #: Default flags for rsync
 DEFAULT_FLAGS = [
     '--archive',
-    '--verbose',
     '--delete',
+    '--protect-args',
+    '--verbose',
 ]
 
 

@@ -81,7 +81,7 @@ def test_sync_target_attributes_minimal():
     assert target.settings.flags.value == []
 
     expected_excludes = SKIPPED_PATHS + DEFAULT_EXCLUDES
-    assert target.excluded == sorted(expected_excludes)
+    assert target.excluded == sorted(set(expected_excludes))
 
     for flag in DEFAULT_FLAGS:
         assert flag in target.flags
@@ -90,9 +90,10 @@ def test_sync_target_attributes_minimal():
     assert isinstance(target.destination, str)
 
     # pylint: disable=no-member
-    assert config.defaults.rsync_command in target.rsync_cmd_args
+    assert config.defaults.rsync_command in target.get_rsync_cmd_args()
+    target_args = target.get_rsync_cmd_args()
     for flag in target.flags:
-        assert flag in target.rsync_cmd_args
+        assert flag in target_args
 
 
 def test_sync_target_attributes_excluded():

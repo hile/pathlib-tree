@@ -2,13 +2,18 @@
 Tree sync target
 """
 
+import itertools
 import os
 import pathlib
+import sys
 
 from tempfile import NamedTemporaryFile
+from subprocess import run, CalledProcessError
 
 from systematic_cli.file import LineTextFile
-from systematic_cli.process import run_command
+from systematic_cli.process import run_command_lineoutput
+
+from .constants import MACOS_META_EXCLUDES
 
 
 class SyncError(Exception):
@@ -147,33 +152,107 @@ class Target:
         """
         return self.settings.destination
 
-    @property
-    def rsync_cmd_args(self):
+    def get_rsync_cmd_args(self, dry_run=False):
         """
         Return rsync command and arguments excluding source and destination
         """
-        return [self.default_settings.rsync_command] + self.flags
+        args = [self.default_settings.rsync_command] + self.flags
+        if dry_run:
+            args.append('--dry-run')
+        return args
 
-    def pull(self):
+    def format_local_paths(self):
         """
-        Pull data from destination to source with rsync
+        Get list of local paths in source directory
         """
-        args = self.rsync_cmd_args
+        prune_filters = list(itertools.chain(
+            *[('-name', name, '-o') for name in MACOS_META_EXCLUDES[:-1]] +
+            [('-name', MACOS_META_EXCLUDES[-1])]
+        ))
+        args = \
+            ['find', str(self.source).replace(' ', r'\ ')] + \
+            ['('] + \
+            prune_filters + \
+            [')', '-prune'] + \
+            ['-o', '-depth', '1']
+        stdout, _stderr = run_command_lineoutput(*args)
+        stdout.sort()
+        return stdout
+
+    def format_remote_paths(self):
+        """
+        Format list of remote paths
+        """
+        try:
+            host, path = str(self.destination).split(':', 1)
+        except IndexError:
+            path = str(self.destination)
+            host = None
+
+        prune_filters = list(itertools.chain(
+            *[('-name', name, '-o') for name in MACOS_META_EXCLUDES[:-1]] +
+            [('-name', MACOS_META_EXCLUDES[-1])]
+        ))
+        args = \
+            ['ssh', host] + \
+            ['find', path.replace(' ', r'\ ')] + \
+            [r'\('] + \
+            prune_filters + \
+            [r'\)', '-prune'] + \
+            ['-o', '-depth', '1']
+        stdout, _stderr = run_command_lineoutput(*args)
+        stdout.sort()
+        if host:
+            stdout = [f'{host}:{pattern}' for pattern in stdout]
+        return stdout
+
+    def get_pull_command_args(self, dry_run=False):
+        """
+        Return 'pull' command arguments
+        """
+        args = self.get_rsync_cmd_args(dry_run=dry_run)
         args.extend([
             f'{self.destination.rstrip("/")}/',
             f'{str(self.source).rstrip("/")}/',
         ])
-        return run_command(*args)
+        return args
 
-    def push(self):
+    def get_push_command_args(self, dry_run=False):
+        """
+        Return 'push' command arguments
+        """
+        args = self.get_rsync_cmd_args(dry_run=dry_run)
+        args.extend([
+            f'{str(self.source).rstrip("/")}/',
+            f'{self.destination.rstrip("/")}/',
+        ])
+        return args
+
+    @staticmethod
+    def run_sync_command(*args):
+        """
+        Run rsync command
+        """
+        try:
+            return run(
+                args,
+                stdout=sys.stdout,
+                stderr=sys.stderr,
+                check=True
+            )
+        except CalledProcessError as error:
+            raise SyncError(error)
+
+    def pull(self, dry_run=False):
+        """
+        Pull data from destination to source with rsync
+        """
+        self.run_sync_command(*self.get_pull_command_args(dry_run))
+
+    def push(self, dry_run=False):
         """
         Push data from source to destination with rsync
         """
         if not self.source.is_dir():
             raise SyncError(f'Source directory does not exist: {self.source}')
-        args = self.rsync_cmd_args
-        args.extend([
-            f'{str(self.source).rstrip("/")}/',
-            f'{self.destination.rstrip("/")}/',
-        ])
-        return run_command(*args)
+        return self.run_sync_command(*self.get_push_command_args(dry_run))

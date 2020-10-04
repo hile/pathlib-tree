@@ -73,11 +73,14 @@ class TargetSettings(ConfigurationSection):
                 names.append(attr)
         return names
 
+    def __iter__(self):
+        targets = [getattr(self, name) for name in self.names]
+        return iter(targets)
+
     def get_target(self, name):
         """
         Get target by name
         """
-        print(vars(self))
         settings = getattr(self, name, None)
         if settings is None:
             raise ValueError(f'Invalid target name {name}')
@@ -101,7 +104,6 @@ class Configuration(YamlConfiguration):
         """
         targets = []
         # pylint: disable=no-member
-        print('targets', type(self.targets), vars(self.targets))
         for name in self.targets.names:
             targets.append(self.get_target(name))
         return targets
