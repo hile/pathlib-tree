@@ -203,7 +203,7 @@ class Tree(pathlib.Path):
                 items = self.iterdir()
             self.__iter_items__ = []
             for item in items:
-                if item.name in self.excluded or match_path_patterns(self.excluded, self, item.name):
+                if self.is_excluded(item):
                     continue
                 if item.is_dir():
                     item = Tree(item, excluded=self.excluded)
@@ -240,6 +240,16 @@ class Tree(pathlib.Path):
         Check if tree is empty
         """
         return list(self) == []
+
+    def is_excluded(self, item):
+        """
+        Check if item is excluded
+        """
+        if item.name in self.excluded:
+            return True
+        if match_path_patterns(self.excluded, self, item.name):
+            return True
+        return False
 
     def create(self, mode=None):
         """

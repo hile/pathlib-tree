@@ -131,6 +131,9 @@ class Target:
         for flag in self.settings.flags:
             if flag not in flags:
                 flags.append(flag)
+        for flag in self.settings.destination_server_flags:
+            if flag not in flags:
+                flags.append(flag)
         if not flags:
             raise ValueError(f'Target defines no rsync flags: {self}')
         if self.settings.iconv:

@@ -50,6 +50,42 @@ class TargetConfiguration(ConfigurationSection):
         'destination',
     )
 
+    @property
+    def destination_server_settings(self):
+        """
+        Return settings for destination server
+        """
+        try:
+            # pylint: disable=no-member
+            host, _path = str(self.destination).split(':', 1)
+        except IndexError:
+            return None
+        # pylint: disable=no-member
+        return getattr(self.__config_root__.servers, host, None)
+
+    @property
+    def destination_server_flags(self):
+        """
+        Return flags specific to destination server
+        """
+        flags = []
+        settings = self.destination_server_settings
+        if settings is not None:
+            iconv = getattr(settings, 'iconv', None)
+            if iconv is not None:
+                flags.append(f'--iconv={iconv}')
+            rsync_path = getattr(settings, 'rsync_path', None)
+            if rsync_path is not None:
+                flags.append(f'--rsync-path={rsync_path}')
+        return flags
+
+
+class ServerSettings(ConfigurationSection):
+    """
+    Server specific common sync settings by server name
+    """
+    __name__ = 'servers'
+
 
 class TargetSettings(ConfigurationSection):
     """
@@ -94,8 +130,12 @@ class Configuration(YamlConfiguration):
     __default_paths__ = DEFAULT_CONFIGURATION_PATHS
     __section_loaders__ = (
         Defaults,
+        ServerSettings,
         TargetSettings,
     )
+
+    def __repr__(self):
+        return 'treesync config'
 
     @property
     def sync_targets(self):
