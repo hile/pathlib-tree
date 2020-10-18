@@ -139,7 +139,9 @@ class Tree(pathlib.Path):
     """
     Extend pathlib.Path to use for filesystem tree processing
     """
-    file_class = TreeItem
+    __directory_loader_class__ = None
+    """Tree item loader for directories"""
+    __file_loader_class__ = None
     """Tree item loader class for files"""
 
     # pylint: disable=protected-access
@@ -173,6 +175,24 @@ class Tree(pathlib.Path):
                 excluded.append(skipped)
         return excluded
 
+    @property
+    def __directory_loader__(self):
+        """
+        Get loader class for subdirectory items
+        """
+        if self.__directory_loader_class__ is not None:
+            return self.__directory_loader_class__
+        return Tree
+
+    @property
+    def __file_loader__(self):
+        """
+        Get loader class for file items
+        """
+        if self.__file_loader_class__ is not None:
+            return self.__file_loader_class__
+        return TreeItem
+
     def __getitem__(self, path):
         """
         Get cached path item by path
@@ -194,6 +214,8 @@ class Tree(pathlib.Path):
         Tree is walked depth first. If self.sorted is set, Tree items are sorted
         before iterating.
         """
+        tree_loader = self.__directory_loader__
+        file_loader = self.__file_loader__
         if not self.__items__:
             self.__iter_child__ = None
             self.__items__ = {}
@@ -206,9 +228,9 @@ class Tree(pathlib.Path):
                 if self.is_excluded(item):
                     continue
                 if item.is_dir():
-                    item = Tree(item, excluded=self.excluded)
+                    item = tree_loader(item, excluded=self.excluded)
                 self.__iter_items__.append(item)
-                self.__items__[str(item)] = self.file_class(item)
+                self.__items__[str(item)] = file_loader(item)
             self.__iterator__ = itertools.chain(self.__iter_items__)
 
         try:
@@ -216,18 +238,18 @@ class Tree(pathlib.Path):
                 try:
                     item = next(self.__iter_child__)
                     if str(item) not in self.__items__:
-                        self.__items__[str(item)] = self.file_class(item)
+                        self.__items__[str(item)] = file_loader(item)
                     return item
                 except StopIteration:
                     self.__iter_child__ = None
 
             item = next(self.__iterator__)
             if item.is_dir():
-                item = Tree(item, sorted=self.sorted, excluded=self.excluded)
+                item = tree_loader(item, sorted=self.sorted, excluded=self.excluded)
                 self.__iter_child__ = item
                 self.__items__[str(self.__iter_child__)] = self.__iter_child__
             else:
-                item = self.file_class(item)
+                item = file_loader(item)
             return item
         except StopIteration:
             self.__iterator__ = itertools.chain(self.__iter_items__)
@@ -307,7 +329,7 @@ class Tree(pathlib.Path):
         for item in list(self):
             if not item.exists():
                 continue
-            if isinstance(item, Tree):
+            if isinstance(item, self.__directory_loader__):
                 item.remove(recursive)
             else:
                 item.unlink()

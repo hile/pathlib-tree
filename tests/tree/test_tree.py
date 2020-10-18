@@ -30,9 +30,9 @@ def validate_tree_iterator_item(tree, item):
     """
     assert isinstance(item, (Tree, pathlib.Path))
     if item.is_dir():
-        assert isinstance(item, Tree)
+        assert isinstance(item, tree.__directory_loader__)
     else:
-        assert isinstance(item, tree.file_class)
+        assert isinstance(item, tree.__file_loader__)
     assert tree[item] == item
 
 
@@ -72,7 +72,7 @@ def test_tree_current_directory_file_attributes():
     tree = Tree(work_directory)
     print(tree)
     item = tree[str(pathlib.Path(__file__))]
-    assert isinstance(item, tree.file_class)
+    assert isinstance(item, tree.__file_loader__)
 
     for attr in ('uid', 'gid', 'size'):
         value = getattr(item, attr)

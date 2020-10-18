@@ -58,7 +58,7 @@ class TargetConfiguration(ConfigurationSection):
         try:
             # pylint: disable=no-member
             host, _path = str(self.destination).split(':', 1)
-        except IndexError:
+        except ValueError:
             return None
         # pylint: disable=no-member
         return getattr(self.__config_root__.servers, host, None)
