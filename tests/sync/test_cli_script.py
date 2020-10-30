@@ -96,10 +96,14 @@ def test_cli_push_pull_tmpdir(tmpdir, monkeypatch):
     testargs = ['treesync', 'push', '--config', str(config_file), 'test']
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', testargs)
-        script.run()
+        with pytest.raises(SystemExit) as exit_status:
+            script.run()
+        assert exit_status.value.code == 0
     assert pathlib.Path(destination).exists()
 
     testargs = ['treesync', 'pull', '--config', str(config_file), 'test']
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', testargs)
-        script.run()
+        with pytest.raises(SystemExit) as exit_status:
+            script.run()
+        assert exit_status.value.code == 0
