@@ -117,8 +117,8 @@ class TreeItem(pathlib.Path):
             return cached_checksum
         try:
             hash_callback = getattr(hashlib, algorithm)()
-        except AttributeError:
-            raise FilesystemError(f'Unexpected algorithm: {algorithm}')
+        except AttributeError as error:
+            raise FilesystemError(f'Unexpected algorithm: {algorithm}') from error
 
         with self.open('rb') as filedescriptor:
             while True:
@@ -182,7 +182,7 @@ class Tree(pathlib.Path):
         """
         if self.__directory_loader_class__ is not None:
             return self.__directory_loader_class__
-        return Tree
+        return self.__class__
 
     @property
     def __file_loader__(self):
@@ -207,6 +207,21 @@ class Tree(pathlib.Path):
     def __iter__(self):
         return self
 
+    def __load_tree__(self, item):
+        """
+        Load sub directory
+        """
+        # pylint: disable=not-callable
+        return self.__directory_loader__(item, sorted=self.sorted, excluded=self.excluded)
+
+    def __load_file__(self, item):
+        """
+        Load file item
+        """
+        # pylint: disable=not-callable
+        return self.__file_loader__(item)
+
+    # pylint: disable=too-many-branches
     def __next__(self):
         """
         Walk tree items recursively, returning Tree or Path objects
@@ -214,23 +229,29 @@ class Tree(pathlib.Path):
         Tree is walked depth first. If self.sorted is set, Tree items are sorted
         before iterating.
         """
-        tree_loader = self.__directory_loader__
-        file_loader = self.__file_loader__
         if not self.__items__:
             self.__iter_child__ = None
             self.__items__ = {}
             if self.sorted:
-                items = sorted(self.iterdir())
+                try:
+                    items = sorted(self.iterdir())
+                except FileNotFoundError as error:
+                    raise FilesystemError(f'{error}') from error
             else:
-                items = self.iterdir()
+                try:
+                    items = self.iterdir()
+                except FileNotFoundError as error:
+                    raise FilesystemError(f'{error}') from error
             self.__iter_items__ = []
             for item in items:
                 if self.is_excluded(item):
                     continue
                 if item.is_dir():
-                    item = tree_loader(item, excluded=self.excluded)
+                    item = self.__load_tree__(item)
+                else:
+                    item = self.__load_file__(item)
+                self.__items__[str(item)] = item
                 self.__iter_items__.append(item)
-                self.__items__[str(item)] = file_loader(item)
             self.__iterator__ = itertools.chain(self.__iter_items__)
 
         try:
@@ -238,23 +259,27 @@ class Tree(pathlib.Path):
                 try:
                     item = next(self.__iter_child__)
                     if str(item) not in self.__items__:
-                        self.__items__[str(item)] = file_loader(item)
+                        if item.is_dir():
+                            item = self.__load_tree__(item)
+                        else:
+                            item = self.__load_file__(item)
+                        self.__items__[str(item)] = item
                     return item
                 except StopIteration:
                     self.__iter_child__ = None
 
             item = next(self.__iterator__)
             if item.is_dir():
-                item = tree_loader(item, sorted=self.sorted, excluded=self.excluded)
+                item = self.__load_tree__(item)
                 self.__iter_child__ = item
                 self.__items__[str(self.__iter_child__)] = self.__iter_child__
             else:
-                item = file_loader(item)
+                item = self.__load_file__(item)
             return item
-        except StopIteration:
+        except StopIteration as stop:
             self.__iterator__ = itertools.chain(self.__iter_items__)
             self.__iter_child__ = None
-            raise StopIteration
+            raise StopIteration from stop
 
     @property
     def is_empty(self):
@@ -296,12 +321,12 @@ class Tree(pathlib.Path):
                 raise ValueError('Invalid mode value')
 
         except ValueError as error:
-            raise FilesystemError(f'Error parsing filesystem mode value as octal {mode}: {error}')
+            raise FilesystemError(f'Error parsing filesystem mode value as octal {mode}: {error}') from error
 
         try:
             self.mkdir(mode)
         except OSError as error:
-            raise FilesystemError(f'Error creating directory {self}: {error}')
+            raise FilesystemError(f'Error creating directory {self}: {error}') from error
 
     def filter(self, patterns):  # noqa
         """
@@ -355,7 +380,7 @@ class TreeSearch(list):
         for item in self:
             if match_path_patterns(patterns, self.tree, item):
                 matches.append(item)
-        return TreeSearch(self.tree, matches)
+        return self.__class__(self.tree, matches)
 
     def exclude(self, patterns):
         """
@@ -368,4 +393,4 @@ class TreeSearch(list):
         for item in self:
             if not match_path_patterns(patterns, self.tree, item):
                 matches.append(item)
-        return TreeSearch(self.tree, matches)
+        return self.__class__(self.tree, matches)

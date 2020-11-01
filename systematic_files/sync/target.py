@@ -244,7 +244,7 @@ class Target:
                 check=True
             )
         except CalledProcessError as error:
-            raise SyncError(error)
+            raise SyncError(error) from error
 
     def pull(self, dry_run=False):
         """
