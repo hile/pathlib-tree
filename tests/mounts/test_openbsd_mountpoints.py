@@ -2,7 +2,7 @@
 Unit tests for OpenBSD mountpoints
 """
 
-from systematic_files.mounts.platform.openbsd import (
+from pathlib_tree.mounts.platform.openbsd import (
     OpenBSDMountPoint,
     OPENBSD_VIRTUAL_FILESYSTEMS
 )

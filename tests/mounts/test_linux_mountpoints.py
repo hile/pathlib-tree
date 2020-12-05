@@ -2,7 +2,7 @@
 Unit tests for linux mountpoints
 """
 
-from systematic_files.mounts.platform.linux import (
+from pathlib_tree.mounts.platform.linux import (
     LinuxMountPoint,
     LINUX_VIRTUAL_FILESYSTEMS
 )

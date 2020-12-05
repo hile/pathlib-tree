@@ -1,8 +1,8 @@
 """
-Unit tests for systematic_files.utils umask functions
+Unit tests for pathlib_tree.utils umask functions
 """
 
-from systematic_files.utils import current_umask
+from pathlib_tree.utils import current_umask
 
 
 def validate_umask(umask):

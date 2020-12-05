@@ -1,3 +1,3 @@
 """
-Unit tests for systematic_files.patterns module
+Unit tests for pathlib_tree.patterns module
 """

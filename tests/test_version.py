@@ -1,7 +1,7 @@
 
-from systematic_cli.tests import validate_version_string
+from cli_toolkit.tests.packaging import validate_version_string
 
-from systematic_files import __version__
+from pathlib_tree import __version__
 
 
 def test_version_string():

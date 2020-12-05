@@ -1,12 +1,12 @@
 """
-Unit tests for systematic_files.tree.Tree searches
+Unit tests for pathlib_tree.tree.Tree searches
 """
 
 import os
 
 from pathlib import Path
 
-from systematic_files.tree import Tree
+from pathlib_tree.tree import Tree
 
 TEST_DIRECTORY_DATA = [
     {

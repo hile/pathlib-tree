@@ -1,5 +1,5 @@
 """
-Utilities for systematic_files
+Utilities for pathlib_tree
 """
 
 import os

@@ -1,8 +1,8 @@
 """
-Unit tests for systematic_files.patterns functions
+Unit tests for pathlib_tree.patterns functions
 """
 
-from systematic_files.patterns import match_path_patterns
+from pathlib_tree.patterns import match_path_patterns
 
 
 def test_match_simple_patterns_no_match():

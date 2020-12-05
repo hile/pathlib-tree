@@ -2,7 +2,7 @@
 Unit tests for mountpoints local to test system
 """
 
-from systematic_files.mounts import Mountpoints
+from pathlib_tree.mounts import Mountpoints
 
 
 def test_local_mountpoints_loading():

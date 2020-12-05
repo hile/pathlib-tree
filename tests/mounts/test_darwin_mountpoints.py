@@ -2,7 +2,7 @@
 Unit tests for MacOS darwin mountpoints
 """
 
-from systematic_files.mounts.platform.darwin import (
+from pathlib_tree.mounts.platform.darwin import (
     DarwinMountPoint,
     DARWIN_VIRTUAL_FILESYSTEMS
 )

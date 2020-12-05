@@ -1,3 +1,3 @@
 """
-Unit tests for systematic_files
+Unit tests for pathlib_tree
 """

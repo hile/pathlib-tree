@@ -2,7 +2,7 @@
 Unit tests for BSD mountpoints
 """
 
-from systematic_files.mounts.platform.bsd import (
+from pathlib_tree.mounts.platform.bsd import (
     BSDMountpoint,
     BSD_VIRTUAL_FILESYSTEMS
 )

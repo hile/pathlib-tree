@@ -1,25 +1,21 @@
 
 from setuptools import setup, find_packages
-from systematic_files import __version__
+from pathlib_tree import __version__
 
 setup(
-    name='systematic-files',
+    name='pathlib-tree',
     keywords='system management files trees mounts patterns',
-    description='Filesystem utilities for systematic',
+    description='Filesystem tree utilities',
     author='Ilkka Tuohela',
     author_email='hile@iki.fi',
-    url='https://git.tuohela.net/systematic-components/systematic-files',
+    url='https://git.tuohela.net/python/pathlib-tree',
     version=__version__,
     license='PSF',
     python_requires='>3.6.0',
     packages=find_packages(),
-    entry_points={
-        'console_scripts': [
-            'treesync=systematic_files.bin.treesync.main:main',
-        ],
-    },
+    entry_points={},
     install_requires=(
-        'systematic-cli>=1.3.0',
+        'cli-toolkit>=1.0.0',
     ),
     classifiers=[
         'Environment :: Console',

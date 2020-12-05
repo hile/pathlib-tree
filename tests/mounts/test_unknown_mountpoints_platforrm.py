@@ -2,12 +2,10 @@
 Unit tests for unknown platform mountpoints
 """
 
-from unittest import mock
-from unittest.mock import patch
-
 import pytest
 
-from systematic_files.mounts import Mountpoints, FilesystemError
+from pathlib_tree.exceptions import FilesystemError
+from pathlib_tree.mounts import Mountpoints
 
 
 def mock_detect_platform_family():
@@ -24,28 +22,34 @@ def mock_detect_toolchain_family():
     return 'test'
 
 
-def test_invalid_mountpoints_system_platform():
+def test_invalid_mountpoints_system_platform(monkeypatch):
     """
     Test loading mountpoints with innvalid system platform
     """
-    with mock.patch('sys.platform', 'unknown'):
-        with pytest.raises(ValueError):
-            Mountpoints()
+    monkeypatch.setattr('sys.platform', 'unknown')
+    with pytest.raises(ValueError):
+        Mountpoints()
 
 
-@patch('systematic_files.mounts.detect_platform_family', mock_detect_platform_family)
-def test_invalid_mountpoints_platform():
+def test_invalid_mountpoints_platform(monkeypatch):
     """
     Test loading mountpoints with invalid response from family detection
     """
+    monkeypatch.setattr(
+        'pathlib_tree.mounts.loader.detect_platform_family',
+        mock_detect_platform_family,
+    )
     with pytest.raises(FilesystemError):
         Mountpoints()
 
 
-@patch('systematic_files.mounts.detect_toolchain_family', mock_detect_toolchain_family)
-def test_invalid_mountpoints_toolchain():
+def test_invalid_mountpoints_toolchain(monkeypatch):
     """
     Test loading mountpoints with invalid response from toolchain detection
     """
+    monkeypatch.setattr(
+        'pathlib_tree.mounts.loader.detect_toolchain_family',
+        mock_detect_toolchain_family
+    )
     with pytest.raises(FilesystemError):
         Mountpoints()

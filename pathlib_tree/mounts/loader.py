@@ -1,11 +1,11 @@
 """
-Classes to load filesystem mounts information
+Mountpoints loader main class MountPoints()
 """
 
 import re
 
-from systematic_cli.platform import detect_platform_family, detect_toolchain_family
-from systematic_cli.process import run_command
+from cli_toolkit.platform import detect_platform_family, detect_toolchain_family
+from cli_toolkit.process import run_command
 
 from ..exceptions import FilesystemError
 from .platform.base import Mountpoint
@@ -72,9 +72,9 @@ class Mountpoints(list):
             mountpoint = self[self.__index___]
             self.__index___ += 1
             return mountpoint
-        except IndexError:
+        except IndexError as error:
             self.__index___ = None
-            raise StopIteration
+            raise StopIteration from error
 
     def __detect_mountpoint_class__(self):
         """

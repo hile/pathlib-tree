@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from systematic_files.mounts import Mountpoints
-from systematic_files.mounts.platform.base import Mountpoint
+from pathlib_tree.mounts import Mountpoints
+from pathlib_tree.mounts.platform.base import Mountpoint
 
 
 class MountpointTestCase(unittest.TestCase):

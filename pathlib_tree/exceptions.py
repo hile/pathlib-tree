@@ -1,5 +1,5 @@
 """
-All exceptions in systematic_files module
+All exceptions in pathlib_tree module
 """
 
 

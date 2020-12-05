@@ -1,6 +1,6 @@
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-MODULE := systematic_files
+MODULE := pathlib_tree
 VERSION := $(shell awk '/^__version__/ {print $$3}' ${MODULE}/__init__.py)
 SPHINX_FLAGS := -b html ./docs public
 SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MODULE}
@@ -11,6 +11,7 @@ clean:
 	@rm -rf build dist .DS_Store .pytest_cache .cache .eggs .tox .coverage coverage.xml htmlcov public
 	@find . -name '__pycache__' -print0 | xargs -0 rm -rf
 	@find . -name '*.egg-info' -print0 | xargs -0 rm -rf
+	@find . -name '.DS_Store' -print0 | xargs -0 rm -rf
 	@find . -name '*.pyc' -print0 | xargs -0 rm -rf
 
 build:

@@ -1,5 +1,5 @@
 """
-Unit tests for systematic_files.tree.Tree class
+Unit tests for pathlib_tree.tree.Tree class
 """
 
 import hashlib
@@ -11,7 +11,7 @@ from datetime import datetime
 
 import pytest
 
-from systematic_files.tree import Tree, TreeItem, FilesystemError, SKIPPED_CHECKSUMS
+from pathlib_tree.tree import Tree, TreeItem, FilesystemError, SKIPPED_CHECKSUMS
 
 
 def validate_tree(path, tree):

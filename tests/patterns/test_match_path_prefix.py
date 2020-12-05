@@ -1,8 +1,8 @@
 """
-Unit tests for systematic_files.patterns path prefix matching
+Unit tests for pathlib_tree.patterns path prefix matching
 """
 
-from systematic_files.patterns import match_path_prefix
+from pathlib_tree.patterns import match_path_prefix
 
 
 def test_match_path_prefix_full_path():
