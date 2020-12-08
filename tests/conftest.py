@@ -2,9 +2,6 @@
 Pytest configuration for all tests
 """
 
-import os
-import pathlib
-
 import pytest
 
 
