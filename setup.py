@@ -15,7 +15,7 @@ setup(
     packages=find_packages(),
     entry_points={},
     install_requires=(
-        'cli-toolkit>=1.0.0',
+        'cli-toolkit>=1.0.1',
     ),
     classifiers=[
         'Environment :: Console',
