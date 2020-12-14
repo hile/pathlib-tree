@@ -34,7 +34,7 @@ test:
 	tox -e unittest
 
 upload: clean
-	python3 setup.py sdist bdist_wheel
+	python3 setup.py sdist
 	twine upload dist/*
 
 tag-release:
