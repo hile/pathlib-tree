@@ -8,7 +8,7 @@ setup(
     description='Filesystem tree utilities',
     author='Ilkka Tuohela',
     author_email='hile@iki.fi',
-    url='https://git.tuohela.net/python/pathlib-tree',
+    url='https://github.com/hile/pathlib-tree',
     version=__version__,
     license='PSF',
     python_requires='>3.6.0',
