@@ -2,8 +2,6 @@
 Unit tests for pathlib_tree.tree.Tree searches
 """
 
-import os
-
 from pathlib import Path
 
 from pathlib_tree.tree import Tree
@@ -41,14 +39,14 @@ def create_test_directory(tmpdir):
     Create test directory for filtering searches
     """
     def create_directory_items(prefix, item):
-        path = os.path.join(prefix, item['name'])
-        os.makedirs(path)
+        path = Path(prefix, item['name'])
+        path.mkdir(parents=True)
         for child in item.get('children', []):
             if isinstance(child, dict):
                 create_directory_items(path, child)
             else:
-                filename = os.path.join(path, child)
-                with open(filename, 'w') as filedescriptor:
+                filename = path.joinpath(child)
+                with filename.open('w', encoding='utf-8') as filedescriptor:
                     filedescriptor.write('\n')
 
     for item in TEST_DIRECTORY_DATA:

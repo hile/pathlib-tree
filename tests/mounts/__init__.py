@@ -26,7 +26,7 @@ class MountpointTestCase(unittest.TestCase):
         Load data file with fake mount command output
         """
         datafile = Path(__file__).absolute().parent.joinpath('data', self.platform, 'mount')
-        with open(datafile, 'r') as filedescriptor:
+        with datafile.open('r', encoding='utf-8') as filedescriptor:
             return filedescriptor.readlines()
 
     def load_df_data(self):
@@ -34,7 +34,7 @@ class MountpointTestCase(unittest.TestCase):
         Load data file with fake df command output
         """
         datafile = Path(__file__).absolute().parent.joinpath('data', self.platform, 'df')
-        with open(datafile, 'r') as filedescriptor:
+        with datafile.open('r', encoding='utf-8') as filedescriptor:
             return filedescriptor.readlines()
 
     def setUp(self):

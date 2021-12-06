@@ -1,5 +1,5 @@
 
-from cli_toolkit.tests.packaging import validate_version_string
+from sys_toolkit.tests.packaging import validate_version_string
 
 from pathlib_tree import __version__
 

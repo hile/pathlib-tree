@@ -4,8 +4,8 @@ Mountpoints loader main class MountPoints()
 
 import re
 
-from cli_toolkit.platform import detect_platform_family, detect_toolchain_family
-from cli_toolkit.process import run_command
+from sys_toolkit.platform import detect_platform_family, detect_toolchain_family
+from sys_toolkit.subprocess import run_command
 
 from ..exceptions import FilesystemError
 from .platform.base import Mountpoint

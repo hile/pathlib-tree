@@ -6,9 +6,12 @@ import hashlib
 import itertools
 import os
 import pathlib
+
 from datetime import datetime
 
 import pytz
+
+from magic import Magic
 
 from .exceptions import FilesystemError
 from .patterns import match_path_patterns
@@ -90,6 +93,17 @@ class TreeItem(pathlib.Path):
         """
         return self.lstat().st_size
 
+    @property
+    def magic(self):
+        """
+        Return file magic string
+        """
+        try:
+            with Magic() as handle:
+                return handle.id_filename(str(self))
+        except Exception as error:
+            raise FileExistsError(f'Error reading file magic from {self}: {error}') from error
+
     def __get_cached_checksum__(self, algorithm):
         """
         Get cached checksum if st_mtime is not changed
@@ -155,10 +169,11 @@ class Tree(pathlib.Path):
         if create_missing and not self.exists():
             self.create(mode)
 
+        self.__items__ = None
         self.__iter_items__ = None
         self.__iter_child__ = None
-        self.__items__ = None
         self.__iterator__ = None
+        self.reset()
 
     def __repr__(self):
         return str(self)
@@ -298,6 +313,15 @@ class Tree(pathlib.Path):
             return True
         return False
 
+    def reset(self):
+        """
+        Result cached items loaded to the tree
+        """
+        self.__items__ = None
+        self.__iter_items__ = None
+        self.__iter_child__ = None
+        self.__iterator__ = None
+
     def create(self, mode=None):
         """
         Create directory
@@ -328,13 +352,13 @@ class Tree(pathlib.Path):
         except OSError as error:
             raise FilesystemError(f'Error creating directory {self}: {error}') from error
 
-    def filter(self, patterns):  # noqa
+    def filter(self, patterns=None, extensions=None):  # noqa
         """
         Filter specified name patterns from tree
 
         Patterns can be either a glob pattern or list of glob patterns
         """
-        return TreeSearch(self, list(self)).filter(patterns)
+        return TreeSearch(self, list(self)).filter(patterns, extensions)
 
     def exclude(self, patterns):
         """
@@ -369,16 +393,20 @@ class TreeSearch(list):
         self.tree = tree
         super().__init__(items)
 
-    def filter(self, patterns):  # noqa
+    def filter(self, patterns=None, extensions=None):  # noqa
         """
         Match specified patterns from matched items
         """
+        if isinstance(extensions, str):
+            extensions = extensions.split(',')
         if isinstance(patterns, str):
             patterns = [patterns]
 
         matches = []
         for item in self:
-            if match_path_patterns(patterns, self.tree, item):
+            if extensions and item.suffix in extensions:
+                matches.append(item)
+            if patterns and match_path_patterns(patterns, self.tree, item):
                 matches.append(item)
         return self.__class__(self.tree, matches)
 

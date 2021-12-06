@@ -8,6 +8,7 @@ GNU_MOUNT_COMMAND = ('mount',)
 # Patterns to match lines from GNU based 'mount' command
 RE_GNU_MOUNT_LINE = [
     re.compile(
+        # pylint: disable=consider-using-f-string
         r'^{}$'.format(
             r'\s+'.join([
                 r'(?P<device>[^\s]*) on',
@@ -22,6 +23,7 @@ BSD_MOUNT_COMMAND = ('mount',)
 # Patterns to match lines from BSD 'mount' output
 RE_BSD_MOUNT_LINE = [
     re.compile(
+        # pylint: disable=consider-using-f-string
         r'^{}$'.format(
             r'\s+'.join([
                 r'(?P<device>[^\s]*) on',
@@ -36,6 +38,7 @@ GNU_DF_COMMAND = ('df', '-Pk')
 # Patterns to match lines from GNU based 'df -Pk' output
 RE_GNU_DF_LINE = [
     re.compile(
+        # pylint: disable=consider-using-f-string
         r'^{}$'.format(
             r'\s+'.join([
                 r'(?P<device>[^\s]*)',
@@ -53,6 +56,7 @@ BSD_DF_COMMAND = ('df', '-Pki')
 # Patterns to match lines from BSD based 'df -Pki' output
 RE_BSD_DF_LINE = [
     re.compile(
+        # pylint: disable=consider-using-f-string
         r'^{}$'.format(
             r'\s+'.join([
                 r'(?P<device>[^\s]*)',
