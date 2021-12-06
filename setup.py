@@ -15,7 +15,7 @@ setup(
     packages=find_packages(),
     entry_points={},
     install_requires=(
-        'cli-toolkit>=1.1.0',
+        'cli-toolkit>=1.1.1',
         'filemagic==1.6',
     ),
     classifiers=[
