@@ -38,7 +38,7 @@ upload: clean
 	twine upload dist/*
 
 tag-release:
-	git tag -a ${VERSION} -m "Publish release ${VERSION}"
+	git tag --annotate ${VERSION} --message "Publish release ${VERSION}"
 	git push origin ${VERSION}
 
 .PHONY: all test
