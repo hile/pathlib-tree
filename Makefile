@@ -8,14 +8,16 @@ SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MO
 all: lint test
 
 clean:
-	@rm -rf build dist .DS_Store .pytest_cache .cache .eggs .tox .coverage coverage.xml htmlcov public
-	@find . -name '__pycache__' -print0 | xargs -0 rm -rf
-	@find . -name '*.egg-info' -print0 | xargs -0 rm -rf
-	@find . -name '.DS_Store' -print0 | xargs -0 rm -rf
-	@find . -name '*.pyc' -print0 | xargs -0 rm -rf
+	@rm -rf build dist .DS_Store .pytest_cache .cache .eggs .coverage coverage.xml public
+	@find . -name '.DS_Store' -print0 | xargs -0r rm -rf
+	@find . -name '__pycache__' -print0 | xargs -0r rm -rf
+	@find . -name '*.egg-info' -print0 | xargs -0r rm -rf
+	@find . -name '*.pyc' -print0 | xargs -0r rm -rf
+	@find . -name '*.tox' -print0 | xargs -0r rm -rf
+	@find . -name 'htmlcov' -print0 | xargs -0r rm -rf
 
 build:
-	python setup.py build
+	poetry build
 
 doc-devel:
 	export PYTHONPATH=${ROOT_DIR}
@@ -33,9 +35,8 @@ lint:
 test:
 	tox -e unittest
 
-upload: clean
-	python3 setup.py sdist
-	twine upload dist/*
+publish: clean build
+	poetry publish
 
 tag-release:
 	git tag --annotate ${VERSION} --message "Publish release ${VERSION}"

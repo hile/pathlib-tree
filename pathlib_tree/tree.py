@@ -8,8 +8,7 @@ import os
 import pathlib
 
 from datetime import datetime
-
-import pytz
+from zoneinfo import ZoneInfo
 
 from magic import Magic
 
@@ -34,6 +33,8 @@ SKIPPED_CHECKSUMS = (
     'shake_256',
 )
 
+# Default timezone for local filesystem timestamp parsing
+DEFAULT_TIMEZONE = ZoneInfo('UTC')
 #: Default checksum hash algorithm
 DEFAULT_CHECKSUM = 'sha256'
 #: Default block size when calculating file checksums
@@ -70,21 +71,21 @@ class TreeItem(pathlib.Path):
         """
         Return st_atime as UTC datetime
         """
-        return datetime.fromtimestamp(self.lstat().st_atime).astimezone(pytz.UTC)
+        return datetime.fromtimestamp(self.lstat().st_atime).astimezone(DEFAULT_TIMEZONE)
 
     @property
     def ctime(self):
         """
         Return st_ctime as UTC datetime
         """
-        return datetime.fromtimestamp(self.lstat().st_ctime).astimezone(pytz.UTC)
+        return datetime.fromtimestamp(self.lstat().st_ctime).astimezone(DEFAULT_TIMEZONE)
 
     @property
     def mtime(self):
         """
         Return st_mtime as UTC datetime
         """
-        return datetime.fromtimestamp(self.lstat().st_mtime).astimezone(pytz.UTC)
+        return datetime.fromtimestamp(self.lstat().st_mtime).astimezone(DEFAULT_TIMEZONE)
 
     @property
     def size(self):

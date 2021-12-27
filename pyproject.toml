@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "pathlib-tree"
+version = "1.2.1"
+description = "Filesystem tree utilities"
+authors = ["Ilkka Tuohela <hile@iki.fi>"]
+license = "PSF"
+classifiers = [
+    'Environment :: Console',
+    'Intended Audience :: Developers',
+    'Intended Audience :: System Administrators',
+    'License :: OSI Approved :: Python Software Foundation License',
+    'Operating System :: POSIX',
+    'Operating System :: MacOS :: MacOS X',
+    'Programming Language :: Python :: 3',
+    'Topic :: System',
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+filemagic = "^1.6"
+cli-toolkit = "^1.2"
+
+[tool.poetry.dev-dependencies]
+coverage = "6.1.2"
+flake8 = "4.0.1"
+flake8-bugbear = "21.9.2"
+flake8-quotes = "3.3.1"
+pycodestyle = "2.8.0"
+pyflakes = "2.4.0"
+pylint = "2.11.1"
+pytest = "6.2.5"
+tox = "3.24.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
