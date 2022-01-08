@@ -51,7 +51,7 @@ testing = ["pytest", "pytest-flake8", "pytest-cov", "pytest-black (>=0.3.7)", "p
 
 [[package]]
 name = "cli-toolkit"
-version = "1.2.1"
+version = "2.0.0"
 description = "Classes to implement CLI commands in python"
 category = "main"
 optional = false
@@ -59,7 +59,7 @@ python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
 setproctitle = ">=1.2,<2.0"
-sys-toolkit = ">=1.2,<2.0"
+sys-toolkit = ">=2.0.0,<3.0.0"
 
 [[package]]
 name = "colorama"
@@ -178,6 +178,14 @@ zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-black (>=0.3.7)", "pytest-mypy"]
+
+[[package]]
+name = "inflection"
+version = "0.5.1"
+description = "A port of Ruby on Rails inflector to Python"
+category = "main"
+optional = false
+python-versions = ">=3.5"
 
 [[package]]
 name = "iniconfig"
@@ -357,13 +365,14 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "sys-toolkit"
-version = "1.2.1"
+version = "2.0.0"
 description = "Classes for operating system utilities"
 category = "main"
 optional = false
 python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
+inflection = ">=0.5,<0.6"
 PyYAML = ">=6.0,<7.0"
 
 [[package]]
@@ -457,7 +466,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "a8e87734dad7da07c5efc33e83f7ea9ba6f3bb0c9d2599b4385b02a083773dc2"
+content-hash = "6ca8becf28f40203e82f5b51c5938f7b07d08cf69b4651297ba57b8c6162b81e"
 
 [metadata.files]
 astroid = [
@@ -477,8 +486,8 @@ attrs = [
     {file = "backports.entry_points_selectable-1.1.1.tar.gz", hash = "sha256:914b21a479fde881635f7af5adc7f6e38d6b274be32269070c53b698c60d5386"},
 ]
 cli-toolkit = [
-    {file = "cli-toolkit-1.2.1.tar.gz", hash = "sha256:d92d1f1569c4bedc86e911f00b8d2bceaa62e1205772400dd8c19e44672b4780"},
-    {file = "cli_toolkit-1.2.1-py3-none-any.whl", hash = "sha256:8ff2698f3aa707c0da834505887f69184798bfdf4d16e5830cadf652c2ceb217"},
+    {file = "cli-toolkit-2.0.0.tar.gz", hash = "sha256:e95f608f1a76d9b733fbf04c84d474599412afa36e437634ec57dfdb743cd6d5"},
+    {file = "cli_toolkit-2.0.0-py3-none-any.whl", hash = "sha256:5cd4ad278af17b3387c752f655fa59b7977b33f785f6e1ebceee409163fa4bd1"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -562,6 +571,10 @@ importlib-metadata = [
 importlib-resources = [
     {file = "importlib_resources-5.4.0-py3-none-any.whl", hash = "sha256:33a95faed5fc19b4bc16b29a6eeae248a3fe69dd55d4d229d2b480e23eeaad45"},
     {file = "importlib_resources-5.4.0.tar.gz", hash = "sha256:d756e2f85dd4de2ba89be0b21dba2a3bbec2e871a42a3a16719258a11f87506b"},
+]
+inflection = [
+    {file = "inflection-0.5.1-py2.py3-none-any.whl", hash = "sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2"},
+    {file = "inflection-0.5.1.tar.gz", hash = "sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
@@ -713,8 +726,8 @@ six = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 sys-toolkit = [
-    {file = "sys-toolkit-1.2.1.tar.gz", hash = "sha256:b721976b12186f35b03420d58758bac7b5e1db2d21eb8295fabf1d23064227f7"},
-    {file = "sys_toolkit-1.2.1-py3-none-any.whl", hash = "sha256:0e97377a006fddc1f4b0f73b4d49c961ddb646c716d700abb4ac081c0a832077"},
+    {file = "sys-toolkit-2.0.0.tar.gz", hash = "sha256:29d82792744700eb290e7bb803847011b34f4e956729769f4172c698f68bba43"},
+    {file = "sys_toolkit-2.0.0-py3-none-any.whl", hash = "sha256:8b387f2da73d65f017a64e7e85667d05dec68956b691b68043b9aec5264fc7b6"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
