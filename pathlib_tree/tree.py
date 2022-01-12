@@ -2,6 +2,7 @@
 Filesystem file tree
 """
 
+import filecmp
 import hashlib
 import itertools
 import os
@@ -323,6 +324,12 @@ class Tree(pathlib.Path):
         self.__iter_child__ = None
         self.__iterator__ = None
 
+    def resolve(self, strict=False):
+        """
+        Return correct type of tree from pathlib.Path.resolve() parent method
+        """
+        return self.__class__(path=super().resolve(strict), sorted=self.sorted, excluded=self.excluded)
+
     def create(self, mode=None):
         """
         Create directory
@@ -384,6 +391,47 @@ class Tree(pathlib.Path):
             else:
                 item.unlink()
         self.rmdir()
+
+    def diff(self, other):
+        """
+        Run simple diff using filecmp.cmp against files in other tree, returning differences in files
+        and files missing from either directory
+
+        Returns three lists with:
+        - list of files with differing contents
+        - files missing from this tree
+        - files missing from other tree
+        """
+        if isinstance(other, str):
+            other = Tree(other, sorted=self.sorted, excluded=self.excluded)
+
+        missing_self = []
+        missing_other = []
+        different = []
+        for item in self:
+            path = other.joinpath(item.relative_to(self))
+            if item.is_dir() or path.is_dir():
+                if item.is_dir() and path.is_file():
+                    missing_self.append(path)
+                if item.is_file() and path.is_dir():
+                    missing_other.append(path)
+            elif path.exists():
+                if not filecmp.cmp(str(item), str(path), shallow=False):
+                    different.append(path)
+            else:
+                missing_other.append(path)
+
+        for item in other:
+            path = self.joinpath(item.relative_to(other))
+            if item.is_dir() or path.is_dir():
+                if item.is_dir() and path.is_file():
+                    missing_other.append(path)
+                if item.is_file() and path.is_dir():
+                    missing_self.append(path)
+            elif not path.exists():
+                missing_self.append(path)
+
+        return different, missing_self, missing_other
 
 
 class TreeSearch(list):
