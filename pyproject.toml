@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pathlib-tree"
-version = "2.1.0"
+version = "2.1.1"
 description = "Filesystem tree utilities"
 authors = ["Ilkka Tuohela <hile@iki.fi>"]
 license = "PSF"
@@ -19,6 +19,7 @@ classifiers = [
 python = "^3.6"
 filemagic = "^1.6"
 cli-toolkit = "^2.0.0"
+python-magic-bin = {version = "^0.4.14", platform = "win32"}
 
 [tool.poetry.dev-dependencies]
 coverage = "6.1.2"
