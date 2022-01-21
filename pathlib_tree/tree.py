@@ -11,7 +11,11 @@ import pathlib
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from magic import Magic
+try:
+    from magic import Magic
+    HAS_LIBMAGIC = True
+except ImportError:
+    HAS_LIBMAGIC = False
 
 from .exceptions import FilesystemError
 from .patterns import match_path_patterns
@@ -100,6 +104,8 @@ class TreeItem(pathlib.Path):
         """
         Return file magic string
         """
+        if not HAS_LIBMAGIC:
+            raise FilesystemError('Required libmagic libraries not detected')
         try:
             with Magic() as handle:
                 return handle.id_filename(str(self))

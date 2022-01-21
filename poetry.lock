@@ -35,7 +35,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "cli-toolkit"
-version = "2.0.1"
+version = "2.0.2"
 description = "Classes to implement CLI commands in python"
 category = "main"
 optional = false
@@ -322,11 +322,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "sys-toolkit"
-version = "2.0.0"
+version = "2.0.3"
 description = "Classes for operating system utilities"
 category = "main"
 optional = false
-python-versions = ">=3.6,<4.0"
+python-versions = ">=3.9,<4.0"
 
 [package.dependencies]
 inflection = ">=0.5,<0.6"
@@ -399,7 +399,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "b0b82fb1584574b08d98d4e622509c5f2761637c53542cf0a9a6132325620cfe"
+content-hash = "22e1fb3770863d234e8438bd5d2fa467c26fc8eed4fc8d915a1dab79c0f3a8d4"
 
 [metadata.files]
 astroid = [
@@ -415,8 +415,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 cli-toolkit = [
-    {file = "cli-toolkit-2.0.1.tar.gz", hash = "sha256:7182d65e0b082b8a09c35d25ecd50bb6b22711192a29bd7e28bbe8e8954a3f3a"},
-    {file = "cli_toolkit-2.0.1-py3-none-any.whl", hash = "sha256:929fd488b3030103acc3f292b9725c10f6474cc5ea304ea3095a38040d23fdb0"},
+    {file = "cli-toolkit-2.0.2.tar.gz", hash = "sha256:80a3aa8c5196bc432f430ea3b4b8a597207f7810caffc2cb46679ed5924fb449"},
+    {file = "cli_toolkit-2.0.2-py3-none-any.whl", hash = "sha256:9068c2140ee109b7fc4333bf0518f43b16b4796374583f2299dc38c9d9785c0f"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -652,8 +652,8 @@ six = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 sys-toolkit = [
-    {file = "sys-toolkit-2.0.0.tar.gz", hash = "sha256:29d82792744700eb290e7bb803847011b34f4e956729769f4172c698f68bba43"},
-    {file = "sys_toolkit-2.0.0-py3-none-any.whl", hash = "sha256:8b387f2da73d65f017a64e7e85667d05dec68956b691b68043b9aec5264fc7b6"},
+    {file = "sys-toolkit-2.0.3.tar.gz", hash = "sha256:f82c8496e082a56823204d8d85e8bdfac3a0a450dcf2f70f98166c715a9a9d6f"},
+    {file = "sys_toolkit-2.0.3-py3-none-any.whl", hash = "sha256:140157bf7fd3cdc2564a258875f8dfdb5978101f7eb7a6a7ed6fd52818555bcf"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
