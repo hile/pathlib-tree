@@ -16,7 +16,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 filemagic = "^1.6"
 cli-toolkit = "^2.0"
 python-magic-bin = {version = "^0.4.14", platform = "win32"}
