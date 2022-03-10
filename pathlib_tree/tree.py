@@ -309,7 +309,7 @@ class Tree(pathlib.Path):
         """
         Check if tree is empty
         """
-        return list(self) == []
+        return not list(self)
 
     def is_excluded(self, item):
         """
