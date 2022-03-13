@@ -1,7 +1,7 @@
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 MODULE := pathlib_tree
-VERSION := $(shell awk '/^__version__/ {print $$3}' ${MODULE}/__init__.py)
+VERSION := $(shell awk '/^version =/ {print $$3}' pyproject.toml)
 SPHINX_FLAGS := -b html ./docs public
 SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MODULE}
 
