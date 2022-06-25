@@ -35,13 +35,14 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "cli-toolkit"
-version = "2.1.1"
+version = "2.1.3"
 description = "Classes to implement CLI commands in python"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0"
 
 [package.dependencies]
+pylint = "<2.14"
 sys-toolkit = ">=2.1,<3.0"
 
 [[package]]
@@ -426,8 +427,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 cli-toolkit = [
-    {file = "cli-toolkit-2.1.1.tar.gz", hash = "sha256:397f4989f5126d880a813b764be7433331846115f2adadda1393db3801b09053"},
-    {file = "cli_toolkit-2.1.1-py3-none-any.whl", hash = "sha256:f9e8769d217bd519d813884542cdfacb75c4370bbafb4c0bbd79f452591d806c"},
+    {file = "cli-toolkit-2.1.3.tar.gz", hash = "sha256:a29588d016b7afe8c377ce7fd948864c33eda1ffbec110d2ec5d1edc2df058d1"},
+    {file = "cli_toolkit-2.1.3-py3-none-any.whl", hash = "sha256:0a8244ef7edbfe777b031bda0c6034021608c04c2d96d414820dee7a390d702a"},
 ]
 colorama = [
     {file = "colorama-0.4.5-py2.py3-none-any.whl", hash = "sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da"},
