@@ -1,42 +1,55 @@
-
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-MODULE := pathlib_tree
+MODULE := $(shell basename ${ROOT_DIR} | tr - _)
 VERSION := $(shell awk '/^version =/ {print $$3}' pyproject.toml)
+
+VENV_DIR := ${HOME}/.venv/${MODULE}
+VENV_BIN := ${VENV_DIR}/bin
+PIP := ${VENV_DIR}/bin/pip
+
 SPHINX_FLAGS := -b html ./docs public
 SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MODULE}
 
 all: lint test
 
+${VENV_BIN}:
+	python3 -m venv ${VENV_DIR}
+	. ${VENV_BIN}/activate; pip install poetry
+	. ${VENV_BIN}/activate; poetry install
+virtualenv: ${VENV_BIN}
+
 clean:
 	@rm -rf build dist .DS_Store .pytest_cache .cache .eggs .coverage coverage.xml public
-	@find . -name '.DS_Store' -print0 | xargs -0r rm -rf
 	@find . -name '__pycache__' -print0 | xargs -0r rm -rf
 	@find . -name '*.egg-info' -print0 | xargs -0r rm -rf
 	@find . -name '*.pyc' -print0 | xargs -0r rm -rf
 	@find . -name '*.tox' -print0 | xargs -0r rm -rf
 	@find . -name 'htmlcov' -print0 | xargs -0r rm -rf
 
-build:
-	poetry build
+build: virtualenv
+	source ${VENV_BIN}/activate; poetry build
 
-doc-devel:
+doc-devel: virtualenv
 	export PYTHONPATH=${ROOT_DIR}
-	vaskitsa documentation generate ${ROOT_DIR}
-	sphinx-autobuild ${SPHINX_WEBSITE_FLAGS} ${SPHINX_FLAGS}
+	source ${VENV_BIN}/activate; vaskitsa documentation generate ${ROOT_DIR}
+	source ${VENV_BIN}/activate; sphinx-autobuild ${SPHINX_WEBSITE_FLAGS} ${SPHINX_FLAGS}
 
-doc:
+doc: virtualenv
 	export PYTHONPATH=${ROOT_DIR}
-	vaskitsa documentation generate ${ROOT_DIR}
-	sphinx-build ${SPHINX_FLAGS}
+	source ${VENV_BIN}/activate; vaskitsa documentation generate ${ROOT_DIR}
+	source ${VENV_BIN}/activate; sphinx-build ${SPHINX_FLAGS}
 
-lint:
-	tox -e lint
+unittest: virtualenv
+	source ${VENV_BIN}/activate && poetry run coverage run --source "${MODULE}" --module py.test
+	source ${VENV_BIN}/activate && poetry run coverage html
+	source ${VENV_BIN}/activate && poetry run coverage report
 
-test:
-	tox -e unittest
+lint: virtualenv
+	source ${VENV_BIN}/activate && poetry run flake8
+	source ${VENV_BIN}/activate && poetry run pycodestyle "${MODULE}" tests
+	source ${VENV_BIN}/activate && poetry run pylint "${MODULE}" tests
 
-publish: clean build
-	poetry publish
+publish: virtualenv clean build
+	source ${VENV_BIN}/activate && poetry publish
 
 tag-release:
 	git tag --annotate ${VERSION} --message "Publish release ${VERSION}"
