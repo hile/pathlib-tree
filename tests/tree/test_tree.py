@@ -11,7 +11,9 @@ from datetime import datetime
 
 import pytest
 
-from pathlib_tree.tree import Tree, TreeItem, FilesystemError, SKIPPED_CHECKSUMS
+from pathlib_tree import Tree as MainLevelTree
+from pathlib_tree.tree import Tree, TreeItem, SKIPPED_CHECKSUMS
+from pathlib_tree.exceptions import FilesystemError
 
 
 def validate_tree(path, tree):
@@ -34,6 +36,14 @@ def validate_tree_iterator_item(tree, item):
     else:
         assert isinstance(item, tree.__file_loader__)
     assert tree[item] == item
+
+
+def test_tree_main_import():
+    """
+    Ensure the tree object imported from top level is Tree object
+    """
+    obj = MainLevelTree(str(pathlib.Path(__file__).parent))
+    assert isinstance(obj, Tree)
 
 
 def test_tree_current_directory():
