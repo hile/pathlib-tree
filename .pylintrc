@@ -11,7 +11,10 @@ unsafe-load-any-extension=no
 
 [MESSAGES CONTROL]
 confidence=
-disable=missing-module-docstring
+disable=
+    missing-module-docstring,
+    use-implicit-booleaness-not-comparison,
+    unnecessary-dunder-call
 enable=c-extension-no-member
 
 [REPORTS]

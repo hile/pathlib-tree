@@ -9,7 +9,7 @@ PIP := ${VENV_DIR}/bin/pip
 SPHINX_FLAGS := -b html ./docs public
 SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MODULE}
 
-all: lint test
+all: lint unittest
 
 ${VENV_BIN}:
 	python3 -m venv ${VENV_DIR}
