@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pathlib-tree"
-version = "2.2.4"
+version = "2.3.0"
 description = "Filesystem tree utilities"
 authors = ["Ilkka Tuohela <hile@iki.fi>"]
 readme = "README.md"
