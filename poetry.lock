@@ -40,18 +40,18 @@ tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy 
 
 [[package]]
 name = "cli-toolkit"
-version = "2.2.6"
+version = "2.4.0"
 description = "Classes to implement CLI commands in python"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cli_toolkit-2.2.6-py3-none-any.whl", hash = "sha256:5fb0604d3546396c499fb89a8dbcdc1c85bbdedd74ce5145dbecf29d21212c71"},
-    {file = "cli_toolkit-2.2.6.tar.gz", hash = "sha256:1cfcd5194015f1dc5e5ae07421e2b4c28e54c5ed695292d8d9a6dfdc25feb573"},
+    {file = "cli_toolkit-2.4.0-py3-none-any.whl", hash = "sha256:99469766efa95fd7cfb6b29efde0a3ff845856a3244289f2baa544e6c6828fe7"},
+    {file = "cli_toolkit-2.4.0.tar.gz", hash = "sha256:919f7c9d4b0d5a511e0935aaa154f18c8490ce47e0dd303adc8d4e72a36a504e"},
 ]
 
 [package.dependencies]
-sys-toolkit = ">=2.2.1,<3.0.0"
+sys-toolkit = ">=2,<3"
 
 [[package]]
 name = "colorama"
@@ -538,14 +538,14 @@ files = [
 
 [[package]]
 name = "sys-toolkit"
-version = "2.3.0"
+version = "2.4.0"
 description = "Classes for operating system utilities"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "sys_toolkit-2.3.0-py3-none-any.whl", hash = "sha256:2fbb84f3501fe6535b6cf5f3c851d5d884ed917b5202c6f63d623646b7d8c9ce"},
-    {file = "sys_toolkit-2.3.0.tar.gz", hash = "sha256:30d034165d2d2f563c67d0a411ae5f57af72397ae5dccf62446d4a870eb45fac"},
+    {file = "sys_toolkit-2.4.0-py3-none-any.whl", hash = "sha256:95caab87bca401e5b487fa140baf7c90fb9919a0efd865f11239349bc71d4bb4"},
+    {file = "sys_toolkit-2.4.0.tar.gz", hash = "sha256:328c8cf4305871ffb2c4060d79e1386fe54a436a1807dd88af66a4781ab66e78"},
 ]
 
 [package.dependencies]
