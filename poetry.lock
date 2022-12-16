@@ -40,14 +40,14 @@ tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy 
 
 [[package]]
 name = "cli-toolkit"
-version = "2.4.0"
+version = "2.4.1"
 description = "Classes to implement CLI commands in python"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "cli_toolkit-2.4.0-py3-none-any.whl", hash = "sha256:99469766efa95fd7cfb6b29efde0a3ff845856a3244289f2baa544e6c6828fe7"},
-    {file = "cli_toolkit-2.4.0.tar.gz", hash = "sha256:919f7c9d4b0d5a511e0935aaa154f18c8490ce47e0dd303adc8d4e72a36a504e"},
+    {file = "cli_toolkit-2.4.1-py3-none-any.whl", hash = "sha256:6f8746d49eefa82247cb46ffecb6431c93659a74953ca4192fa5628fcc613401"},
+    {file = "cli_toolkit-2.4.1.tar.gz", hash = "sha256:cf01f666b0bd0eb78a9b09a226123e68f3059b1302e1f026817dd3cd0ca85b2d"},
 ]
 
 [package.dependencies]
@@ -538,14 +538,14 @@ files = [
 
 [[package]]
 name = "sys-toolkit"
-version = "2.4.0"
+version = "2.4.1"
 description = "Classes for operating system utilities"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "sys_toolkit-2.4.0-py3-none-any.whl", hash = "sha256:95caab87bca401e5b487fa140baf7c90fb9919a0efd865f11239349bc71d4bb4"},
-    {file = "sys_toolkit-2.4.0.tar.gz", hash = "sha256:328c8cf4305871ffb2c4060d79e1386fe54a436a1807dd88af66a4781ab66e78"},
+    {file = "sys_toolkit-2.4.1-py3-none-any.whl", hash = "sha256:79c8a49cf2ae08a3c8779a7574d59fc2f2a4d80117af272ea984e657ed35d042"},
+    {file = "sys_toolkit-2.4.1.tar.gz", hash = "sha256:fec9f9d64ba14b0ca0dd9c7262633d92edf3dba564c96107fc0398e719d0fda2"},
 ]
 
 [package.dependencies]
