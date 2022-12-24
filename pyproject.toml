@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pathlib-tree"
-version = "2.4.1"
+version = "2.4.2"
 description = "Filesystem tree utilities"
 authors = ["Ilkka Tuohela <hile@iki.fi>"]
 readme = "README.md"
@@ -23,21 +23,19 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 filemagic = "^1.6"
-cli-toolkit = "^2.2"
+cli-toolkit = "^2"
 python-magic-bin = {version = "^0.4.14", platform = "win32"}
-pylint = "^2.14"
 
-[tool.poetry.dev-dependencies]
-coverage = "^6.1"
-flake8 = "^5.0"
+[tool.poetry.group.dev.dependencies]
+coverage = "^7"
+flake8 = "^6"
 flake8-bugbear = "^22"
-flake8-quotes = "^3.3"
-pycodestyle = "^2.8"
-pyflakes = "^2.4"
+flake8-quotes = "^3"
+pycodestyle = "^2"
+pyflakes = "^3"
 pylint = "^2"
-pytest = "^7.1"
-tox = "^3"
-astroid = "^2"
+pytest = "^7"
+tox = "^4"
 
 [build-system]
 requires = ["poetry-core>=1.3.2"]
