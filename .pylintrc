@@ -156,4 +156,5 @@ max-statements=50
 min-public-methods=2
 
 [EXCEPTIONS]
-overgeneral-exceptions=BaseException,
+overgeneral-exceptions=
+    builtins.BaseException,
