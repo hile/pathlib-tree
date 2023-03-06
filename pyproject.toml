@@ -1,13 +1,14 @@
 [tool.poetry]
 name = "pathlib-tree"
-version = "2.4.5"
+version = "2.4.7"
 description = "Filesystem tree utilities"
 authors = ["Ilkka Tuohela <hile@iki.fi>"]
 readme = "README.md"
+homepage = "https://github.com/hile/pathlib-tree"
 include = [
     "LICENSE",
 ]
-license = "BSD"
+license = "BSD-3-Clause"
 classifiers = [
     "Environment :: Console",
     "License :: OSI Approved :: BSD License",
