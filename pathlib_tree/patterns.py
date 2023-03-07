@@ -1,14 +1,19 @@
+#
+# Copyright (C) 2020-2023 by Ilkka Tuohela <hile@iki.fi>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 """
 Pattern matching for filesystem trees
 """
-
 import os
 import fnmatch
 
 from pathlib import Path
+from typing import List, Union
 
 
-def match_path_prefix(prefix, path):
+def match_path_prefix(prefix: Union[str, List[str]], path: Path) -> bool:
     """
     Match path prefix for two paths with fnmatch applied to path components
     """
@@ -33,7 +38,7 @@ def match_path_prefix(prefix, path):
     return True
 
 
-def match_path_patterns(patterns, root, path):
+def match_path_patterns(patterns: List[str], root: Path, path: Union[str, Path]) -> bool:
     """
     Match specified path to filename patterns compared to root directory
     """

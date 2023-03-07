@@ -1,11 +1,15 @@
+#
+# Copyright (C) 2020-2023 by Ilkka Tuohela <hile@iki.fi>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 """
 Unit tests for pathlib_tree.patterns functions
 """
-
 from pathlib_tree.patterns import match_path_patterns
 
 
-def test_match_simple_patterns_no_match():
+def test_match_simple_patterns_no_match() -> None:
     """
     Test simple relative tree pattern match case
     """
@@ -19,7 +23,7 @@ def test_match_simple_patterns_no_match():
     )
 
 
-def test_match_simple_patterns_direct_match():
+def test_match_simple_patterns_direct_match() -> None:
     """
     Test simple relative tree pattern match case
     """
@@ -42,7 +46,7 @@ def test_match_simple_patterns_direct_match():
     )
 
 
-def test_match_simple_patterns():
+def test_match_simple_patterns() -> None:
     """
     Test simple relative tree pattern match case
     """
@@ -57,7 +61,7 @@ def test_match_simple_patterns():
     )
 
 
-def test_match_prefix_match():
+def test_match_prefix_match() -> None:
     """
     Test simple relative tree pattern match case
     """
@@ -71,7 +75,7 @@ def test_match_prefix_match():
     )
 
 
-def test_match_prefix_glob_match():
+def test_match_prefix_glob_match() -> None:
     """
     Test simple relative tree pattern match case
     """
@@ -85,7 +89,7 @@ def test_match_prefix_glob_match():
     )
 
 
-def test_match_relative_pattern():
+def test_match_relative_pattern() -> None:
     """
     Test matching a relative path pattern
     """

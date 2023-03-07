@@ -1,7 +1,11 @@
+#
+# Copyright (C) 2020-2023 by Ilkka Tuohela <hile@iki.fi>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 """
 Filesystem file tree
 """
-
 import filecmp
 import hashlib
 import itertools
@@ -9,13 +13,8 @@ import os
 import pathlib
 
 from datetime import datetime
+from typing import Any, Iterator, List, Optional, Tuple, Union
 from zoneinfo import ZoneInfo
-
-try:
-    from magic import Magic
-    HAS_LIBMAGIC = True
-except ImportError:
-    HAS_LIBMAGIC = False
 
 from .exceptions import FilesystemError
 from .patterns import match_path_patterns
@@ -58,61 +57,64 @@ class TreeItem(pathlib.Path):
     __checksums__ = {}
 
     @property
-    def gid(self):
+    def gid(self) -> int:
         """
         Return st_gid
         """
         return self.lstat().st_gid
 
     @property
-    def uid(self):
+    def uid(self) -> int:
         """
         Return st_uid
         """
         return self.lstat().st_uid
 
     @property
-    def atime(self):
+    def atime(self) -> datetime:
         """
         Return st_atime as UTC datetime
         """
         return datetime.fromtimestamp(self.lstat().st_atime).astimezone(DEFAULT_TIMEZONE)
 
     @property
-    def ctime(self):
+    def ctime(self) -> datetime:
         """
         Return st_ctime as UTC datetime
         """
         return datetime.fromtimestamp(self.lstat().st_ctime).astimezone(DEFAULT_TIMEZONE)
 
     @property
-    def mtime(self):
+    def mtime(self) -> datetime:
         """
         Return st_mtime as UTC datetime
         """
         return datetime.fromtimestamp(self.lstat().st_mtime).astimezone(DEFAULT_TIMEZONE)
 
     @property
-    def size(self):
+    def size(self) -> int:
         """
         Return st_size
         """
         return self.lstat().st_size
 
     @property
-    def magic(self):
+    def magic(self) -> str:
         """
         Return file magic string
         """
-        if not HAS_LIBMAGIC:
-            raise FilesystemError('Required libmagic libraries not detected')
+        # pylint: disable=import-outside-toplevel
+        try:
+            from magic import Magic
+        except ImportError as error:
+            raise FilesystemError('Required libmagic library not available') from error
         try:
             with Magic() as handle:
                 return handle.id_filename(str(self))
         except Exception as error:
-            raise FileExistsError(f'Error reading file magic from {self}: {error}') from error
+            raise FilesystemError(f'Error reading file magic from {self}: {error}') from error
 
-    def __get_cached_checksum__(self, algorithm):
+    def __get_cached_checksum__(self, algorithm: str) -> Optional[str]:
         """
         Get cached checksum if st_mtime is not changed
         """
@@ -125,7 +127,9 @@ class TreeItem(pathlib.Path):
         except KeyError:
             return None
 
-    def checksum(self, algorithm=DEFAULT_CHECKSUM, block_size=DEFAULT_CHECKSUM_BLOCK_SIZE):
+    def checksum(self,
+                 algorithm: str = DEFAULT_CHECKSUM,
+                 block_size: int = DEFAULT_CHECKSUM_BLOCK_SIZE) -> str:
         """
         Calculate hex digest for file with specified checksum algorithm
         """
@@ -161,9 +165,14 @@ class Tree(pathlib.Path):
     """
     Extend pathlib.Path to use for filesystem tree processing
     """
-    __directory_loader_class__ = None
+    create_missing: bool
+    sorted: bool
+    mode: str
+    excluded: List[str]
+
+    __directory_loader_class__: 'Tree' = None
     """Tree item loader for directories"""
-    __file_loader_class__ = None
+    __file_loader_class__: TreeItem = None
     """Tree item loader class for files"""
 
     # pylint: disable=protected-access
@@ -171,7 +180,12 @@ class Tree(pathlib.Path):
 
     # pylint: disable=redefined-builtin
     # pylint: disable=unused-argument
-    def __init__(self, path, create_missing=False, sorted=True, mode=None, excluded=None):  # noqa
+    def __init__(self,
+                 path: Union[str, pathlib.Path],
+                 create_missing: bool = False,
+                 sorted: bool = True,
+                 mode: str = None,
+                 excluded: Optional[List[str]] = None):  # noqa
         self.excluded = self.__configure_excluded__(excluded)
         self.sorted = sorted  # noqa
         if create_missing and not self.exists():
@@ -183,11 +197,11 @@ class Tree(pathlib.Path):
         self.__iterator__ = None
         self.reset()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
     @staticmethod
-    def __configure_excluded__(excluded):
+    def __configure_excluded__(excluded: Optional[List[str]] = None) -> List[str]:
         """
         Merge excluded with skipped paths
         """
@@ -216,7 +230,7 @@ class Tree(pathlib.Path):
             return self.__file_loader_class__
         return TreeItem
 
-    def __getitem__(self, path):
+    def __getitem__(self, path: Union[str, pathlib.Path]) -> Any:
         """
         Get cached path item by path
         """
@@ -227,17 +241,17 @@ class Tree(pathlib.Path):
 
         return self.__items__[path]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
         return self
 
-    def __load_tree__(self, item):
+    def __load_tree__(self, item: Union[str, pathlib.Path]) -> TreeItem:
         """
         Load sub directory
         """
         # pylint: disable=not-callable
         return self.__directory_loader__(item, sorted=self.sorted, excluded=self.excluded)
 
-    def __load_file__(self, item):
+    def __load_file__(self, item: Union[str, pathlib.Path]) -> TreeItem:
         """
         Load file item
         """
@@ -261,20 +275,20 @@ class Tree(pathlib.Path):
                 except FileNotFoundError as error:
                     raise FilesystemError(f'{error}') from error
             else:
-                try:
-                    items = self.iterdir()
-                except FileNotFoundError as error:
-                    raise FilesystemError(f'{error}') from error
+                items = self.iterdir()
             self.__iter_items__ = []
-            for item in items:
-                if self.is_excluded(item):
-                    continue
-                if item.is_dir():
-                    item = self.__load_tree__(item)
-                else:
-                    item = self.__load_file__(item)
-                self.__items__[str(item)] = item
-                self.__iter_items__.append(item)
+            try:
+                for item in items:
+                    if self.is_excluded(item):
+                        continue
+                    if item.is_dir():
+                        item = self.__load_tree__(item)
+                    else:
+                        item = self.__load_file__(item)
+                    self.__items__[str(item)] = item
+                    self.__iter_items__.append(item)
+            except FileNotFoundError as error:
+                raise FilesystemError(f'{error}') from error
             self.__iterator__ = itertools.chain(self.__iter_items__)
 
         try:
@@ -305,13 +319,13 @@ class Tree(pathlib.Path):
             raise StopIteration from stop
 
     @property
-    def is_empty(self):
+    def is_empty(self) -> bool:
         """
         Check if tree is empty
         """
         return not list(self)
 
-    def is_excluded(self, item):
+    def is_excluded(self, item: TreeItem) -> bool:
         """
         Check if item is excluded
         """
@@ -321,7 +335,7 @@ class Tree(pathlib.Path):
             return True
         return False
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Result cached items loaded to the tree
         """
@@ -330,13 +344,13 @@ class Tree(pathlib.Path):
         self.__iter_child__ = None
         self.__iterator__ = None
 
-    def resolve(self, strict=False):
+    def resolve(self, strict: bool = False) -> 'Tree':
         """
         Return correct type of tree from pathlib.Path.resolve() parent method
         """
         return self.__class__(path=super().resolve(strict), sorted=self.sorted, excluded=self.excluded)
 
-    def create(self, mode=None):
+    def create(self, mode: Optional[Union[int, str]] = None):
         """
         Create directory
 
@@ -366,7 +380,9 @@ class Tree(pathlib.Path):
         except OSError as error:
             raise FilesystemError(f'Error creating directory {self}: {error}') from error
 
-    def filter(self, patterns=None, extensions=None):  # noqa
+    def filter(self,
+               patterns: Optional[List[str]] = None,
+               extensions: Optional[List[str]] = None) -> 'TreeSearch':  # noqa
         """
         Filter specified name patterns from tree
 
@@ -374,7 +390,7 @@ class Tree(pathlib.Path):
         """
         return TreeSearch(self, list(self)).filter(patterns, extensions)
 
-    def exclude(self, patterns):
+    def exclude(self, patterns: Optional[List[str]] = None) -> 'TreeSearch':
         """
         Exclude specified name patterns from tree
 
@@ -382,9 +398,9 @@ class Tree(pathlib.Path):
         """
         return TreeSearch(self, list(self)).exclude(patterns)
 
-    def remove(self, recursive=False):
+    def remove(self, recursive: bool = False) -> None:
         """
-        Remove tree
+        Remove tree from filesystem
         """
         if not recursive and not self.is_empty:
             raise FilesystemError(f'Tree is not empty: {self}')
@@ -398,7 +414,7 @@ class Tree(pathlib.Path):
                 item.unlink()
         self.rmdir()
 
-    def diff(self, other):
+    def diff(self, other: Union[str, 'Tree']) -> Tuple[List[TreeItem], List[TreeItem], List[TreeItem]]:
         """
         Run simple diff using filecmp.cmp against files in other tree, returning differences in files
         and files missing from either directory
@@ -408,8 +424,8 @@ class Tree(pathlib.Path):
         - files missing from this tree
         - files missing from other tree
         """
-        if isinstance(other, str):
-            other = Tree(other, sorted=self.sorted, excluded=self.excluded)
+        if not isinstance(other, Tree):
+            other = Tree(str(other), sorted=self.sorted, excluded=self.excluded)
 
         missing_self = []
         missing_other = []
@@ -444,11 +460,15 @@ class TreeSearch(list):
     """
     Chainable tree search results
     """
-    def __init__(self, tree, items):
+    tree: Tree
+
+    def __init__(self, tree: Tree, items: List[TreeItem]) -> None:
         self.tree = tree
         super().__init__(items)
 
-    def filter(self, patterns=None, extensions=None):  # noqa
+    def filter(self,
+               patterns: Union[str, List[str]] = None,
+               extensions: Optional[List[str]] = None) -> 'TreeSearch':  # noqa
         """
         Match specified patterns from matched items
         """
@@ -465,7 +485,7 @@ class TreeSearch(list):
                 matches.append(item)
         return self.__class__(self.tree, matches)
 
-    def exclude(self, patterns):
+    def exclude(self, patterns: Union[str, List[str]] = None) -> 'TreeSearch':
         """
         Exclude specified patterns from matched items
         """

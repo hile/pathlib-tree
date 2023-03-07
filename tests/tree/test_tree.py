@@ -1,14 +1,17 @@
+#
+# Copyright (C) 2020-2023 by Ilkka Tuohela <hile@iki.fi>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 """
 Unit tests for pathlib_tree.tree.Tree class
 """
-
 import hashlib
-import pathlib
 import shutil
 import stat
 
 from datetime import datetime
-
+from pathlib import Path
 import pytest
 
 from pathlib_tree import Tree as MainLevelTree
@@ -16,7 +19,7 @@ from pathlib_tree.tree import Tree, TreeItem, SKIPPED_CHECKSUMS
 from pathlib_tree.exceptions import FilesystemError
 
 
-def validate_tree(path, tree):
+def validate_tree(path, tree) -> None:
     """
     Validate loaded tree item for valid directory
     """
@@ -26,11 +29,11 @@ def validate_tree(path, tree):
     return tree
 
 
-def validate_tree_iterator_item(tree, item):
+def validate_tree_iterator_item(tree, item) -> None:
     """
     Validate item from tree iterator
     """
-    assert isinstance(item, (Tree, pathlib.Path))
+    assert isinstance(item, (Tree, Path))
     if item.is_dir():
         assert isinstance(item, tree.__directory_loader__)
     else:
@@ -38,50 +41,61 @@ def validate_tree_iterator_item(tree, item):
     assert tree[item] == item
 
 
-def test_tree_main_import():
+def test_tree_main_import(parent_path) -> None:
     """
     Ensure the tree object imported from top level is Tree object
     """
-    obj = MainLevelTree(str(pathlib.Path(__file__).parent))
+    obj = MainLevelTree(parent_path)
     assert isinstance(obj, Tree)
 
 
-def test_tree_current_directory():
+def test_tree_current_directory(parent_path) -> None:
     """
     Test loading this directory as tree
     """
-    work_directory = str(pathlib.Path(__file__).parent)
-    validate_tree(work_directory, Tree(work_directory))
+    validate_tree(parent_path, Tree(parent_path))
 
 
-def test_tree_current_directory_create_missing_flag_true():
+def test_tree_missing_directory_iterator(tmpdir) -> None:
+    """
+    Test iterating Tree a path that does not exist
+    """
+    with pytest.raises(FilesystemError):
+        next(Tree(str(Path(tmpdir.strpath, 'missing-directory')), sorted=False))
+
+
+def test_tree_missing_directory_sorted_iterator(tmpdir) -> None:
+    """
+    Test iterating sorted Tree for a path that does not exist
+    """
+    with pytest.raises(FilesystemError):
+        next(Tree(str(Path(tmpdir.strpath, 'missing-directory')), sorted=True))
+
+
+def test_tree_current_directory_create_missing_flag_true(parent_path) -> None:
     """
     Test loading this directory as tree with create_missing = True
     """
-    work_directory = str(pathlib.Path(__file__).parent)
-    validate_tree(work_directory, Tree(work_directory, create_missing=True))
+    validate_tree(parent_path, Tree(parent_path, create_missing=True))
 
 
-def test_tree_current_directory_missing_path():
+def test_tree_current_directory_missing_path(parent_path) -> None:
     """
     Test loading this directory as tree and looking up unknown filename
     """
-    work_directory = str(pathlib.Path(__file__).parent)
-    tree = Tree(work_directory)
-    validate_tree(work_directory, tree)
+    tree = Tree(parent_path)
+    validate_tree(parent_path, tree)
     with pytest.raises(KeyError):
         assert tree['8E8A747A-0285-4D5B-B59C-A0300B1607E3'] is None
 
 
-def test_tree_current_directory_file_attributes():
+def test_tree_current_directory_file_attributes(parent_path) -> None:
     """
     Test loading this directory as tree and looking up current file and
     custom attributes for TreeItem class
     """
-    work_directory = str(pathlib.Path(__file__).parent)
-    tree = Tree(work_directory)
-    print(tree)
-    item = tree[str(pathlib.Path(__file__))]
+    tree = Tree(parent_path)
+    item = tree[str(Path(__file__))]
     assert isinstance(item, tree.__file_loader__)
 
     for attr in ('uid', 'gid', 'size'):
@@ -116,16 +130,27 @@ def test_tree_current_directory_file_attributes():
             item.checksum(hash_algorithm)
 
 
-def test_tree_item_checksum_missing_file(tmpdir):
+def test_tree_resolve(tmpdir) -> None:
+    """
+    Test Tree resolve() method returns correct type
+    """
+    exclude_list = ['a', 'b', 'c']
+    tree = Tree(tmpdir.strpath, excluded=exclude_list)
+    resolved = tree.resolve()
+    assert isinstance(resolved, Tree)
+    assert resolved.excluded == exclude_list
+
+
+def test_tree_item_checksum_missing_file(tmpdir) -> None:
     """
     Test calculating checksum for missing file
     """
-    item = TreeItem(pathlib.Path(tmpdir, 'missing-file'))
+    item = TreeItem(Path(tmpdir, 'missing-file'))
     with pytest.raises(FilesystemError):
         item.checksum()
 
 
-def test_tree_invalid_path():
+def test_tree_invalid_path() -> None:
     """
     Test loading invalid path as tree
     """
@@ -133,11 +158,11 @@ def test_tree_invalid_path():
     assert not tree.exists()
 
 
-def test_tree_iterating_test_directory():
+def test_tree_iterating_test_directory(parent_path) -> None:
     """
     Test iterating over this test data directory
     """
-    tree = Tree(pathlib.Path(__file__).parent)
+    tree = Tree(parent_path)
     assert tree.exists()
     assert tree.sorted  # pylint: disable=W0613, W0622
 
@@ -149,14 +174,14 @@ def test_tree_iterating_test_directory():
         previous = item
 
 
-def test_tree_skipped_filenames(tmpdir):
+def test_tree_skipped_filenames(tmpdir) -> None:
     """
     Test tree with skipped filenames
     """
     tree = Tree(tmpdir)
 
     filename = '.metadata_never_index'
-    skipped_file = pathlib.Path(tree, filename)
+    skipped_file = Path(tree, filename)
     skipped_file.touch()
     assert skipped_file.is_file()
 
@@ -166,13 +191,13 @@ def test_tree_skipped_filenames(tmpdir):
     assert skipped_file not in tree
 
 
-def test_tree_skipped_dirnames(tmpdir):
+def test_tree_skipped_dirnames(tmpdir) -> None:
     """
     Test tree with skipped directory name patterns
     """
     tree = Tree(tmpdir)
 
-    skipped_file = pathlib.Path(tree, 'skipped/test.yml')
+    skipped_file = Path(tree, 'skipped/test.yml')
     skipped_file.parent.mkdir()
     skipped_file.touch()
     assert skipped_file.is_file()
@@ -183,11 +208,11 @@ def test_tree_skipped_dirnames(tmpdir):
     assert skipped_file not in tree
 
 
-def test_tree_iterating_test_directory_sorted():
+def test_tree_iterating_test_directory_sorted(parent_path) -> None:
     """
     Test iterating over this test data directory as unsorted items
     """
-    tree = Tree(pathlib.Path(__file__).parent, sorted=False)
+    tree = Tree(parent_path, sorted=False)
     assert tree.exists()
     assert not tree.sorted  # pylint: disable=W0613, W0622
 
@@ -200,7 +225,7 @@ def test_tree_iterating_test_directory_sorted():
     assert len(tree.__items__) == total_items
 
 
-def test_tree_existing_file_create():
+def test_tree_existing_file_create() -> None:
     """
     Test loading existing file path as tree and creating iit
     """
@@ -210,11 +235,11 @@ def test_tree_existing_file_create():
         tree.create()
 
 
-def test_tree_invalid_path_create(tmpdir):
+def test_tree_invalid_path_create(tmpdir) -> None:
     """
     Test loading temporary path as tree and creating directory manually
     """
-    path = pathlib.Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
+    path = Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
     tree = Tree(path)
     assert not tree.exists()
     tree.create()
@@ -225,22 +250,22 @@ def test_tree_invalid_path_create(tmpdir):
         tree.create()
 
 
-def test_tree_invalid_path_create_missing(tmpdir):
+def test_tree_invalid_path_create_missing(tmpdir) -> None:
     """
     Test loading temporary path as tree and creating directory manually
     with specified invalid mode
     """
-    path = pathlib.Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
+    path = Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
     tree = Tree(path, create_missing=True)
     assert tree.exists()
 
 
-def test_tree_invalid_path_create_with_invalid_modes(tmpdir):
+def test_tree_invalid_path_create_with_invalid_modes(tmpdir) -> None:
     """
     Test loading temporary path as tree and creating directory manually
     with specified invalid mode
     """
-    path = pathlib.Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
+    path = Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
     tree = Tree(path)
     assert not tree.exists()
 
@@ -249,13 +274,13 @@ def test_tree_invalid_path_create_with_invalid_modes(tmpdir):
             tree.create(mode)
 
 
-def test_tree_invalid_path_create_with_mode(tmpdir):
+def test_tree_invalid_path_create_with_mode(tmpdir) -> None:
     """
     Test loading temporary path as tree and creating directory manually
     with specified mode
     """
     mode = '2700'
-    path = pathlib.Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
+    path = Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
     tree = Tree(path)
     assert not tree.exists()
     tree.create(mode)
@@ -264,13 +289,13 @@ def test_tree_invalid_path_create_with_mode(tmpdir):
     tree.rmdir()
 
 
-def test_tree_invalid_path_create_with_mode_as_int(tmpdir):
+def test_tree_invalid_path_create_with_mode_as_int(tmpdir) -> None:
     """
     Test loading temporary path as tree and creating directory manually
     with specified mode
     """
     mode = int('2700', 8)
-    path = pathlib.Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
+    path = Path(tmpdir, '8E8A747A-0285-4D5B-B59C-A0300B1607E3')
     tree = Tree(path)
     assert not tree.exists()
     tree.create(mode)
@@ -280,7 +305,9 @@ def test_tree_invalid_path_create_with_mode_as_int(tmpdir):
 
 
 # pylint: disable=unused-argument
-def test_tree_create_permission_denied(mock_path_not_exists, mock_path_mkdir_permission_denied):
+def test_tree_create_permission_denied(
+        mock_path_not_exists,
+        mock_path_mkdir_permission_denied) -> None:
     """
     Test creating directory without permissions for path
     """
@@ -290,11 +317,11 @@ def test_tree_create_permission_denied(mock_path_not_exists, mock_path_mkdir_per
         tree.create()
 
 
-def test_tree_create_and_remove(tmpdir):
+def test_tree_create_and_remove(tmpdir) -> None:
     """
     Test creating directory without permissions for path
     """
-    parent = pathlib.Path(__file__).parent
+    parent = Path(__file__).parent
     tree = Tree(tmpdir, 'test-target')
     assert tree.exists()
     assert tree.is_empty is True
