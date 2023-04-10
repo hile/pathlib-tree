@@ -26,32 +26,32 @@ clean:
 	@find . -name 'htmlcov' -print0 | xargs -0r rm -rf
 
 build: virtualenv
-	source ${VENV_BIN}/activate; poetry build
+	. ${VENV_BIN}/activate; poetry build
 
 doc-devel: virtualenv
 	export PYTHONPATH=${ROOT_DIR}
-	source ${VENV_BIN}/activate; vaskitsa documentation generate ${ROOT_DIR}
-	source ${VENV_BIN}/activate; sphinx-autobuild ${SPHINX_WEBSITE_FLAGS} ${SPHINX_FLAGS}
+	. ${VENV_BIN}/activate; vaskitsa documentation generate ${ROOT_DIR}
+	. ${VENV_BIN}/activate; sphinx-autobuild ${SPHINX_WEBSITE_FLAGS} ${SPHINX_FLAGS}
 
 doc: virtualenv
 	export PYTHONPATH=${ROOT_DIR}
-	source ${VENV_BIN}/activate; vaskitsa documentation generate ${ROOT_DIR}
-	source ${VENV_BIN}/activate; sphinx-build ${SPHINX_FLAGS}
+	. ${VENV_BIN}/activate; vaskitsa documentation generate ${ROOT_DIR}
+	. ${VENV_BIN}/activate; sphinx-build ${SPHINX_FLAGS}
 
 unittest: virtualenv
-	source ${VENV_BIN}/activate && poetry run coverage run --source "${MODULE}" --module pytest
+	. ${VENV_BIN}/activate && poetry run coverage run --source "${MODULE}" --module pytest
 
 coverage: virtualenv
-	source ${VENV_BIN}/activate && poetry run coverage html
-	source ${VENV_BIN}/activate && poetry run coverage report
+	. ${VENV_BIN}/activate && poetry run coverage html
+	. ${VENV_BIN}/activate && poetry run coverage report
 
 lint: virtualenv
-	source ${VENV_BIN}/activate && poetry run flake8
-	source ${VENV_BIN}/activate && poetry run pycodestyle "${MODULE}" tests
-	source ${VENV_BIN}/activate && poetry run pylint "${MODULE}" tests
+	. ${VENV_BIN}/activate && poetry run flake8
+	. ${VENV_BIN}/activate && poetry run pycodestyle "${MODULE}" tests
+	. ${VENV_BIN}/activate && poetry run pylint "${MODULE}" tests
 
 publish: virtualenv clean build
-	source ${VENV_BIN}/activate && poetry publish
+	. ${VENV_BIN}/activate && poetry publish
 
 tag-release:
 	git tag --annotate ${VERSION} --message "Publish release ${VERSION}"
