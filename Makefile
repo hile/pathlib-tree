@@ -46,6 +46,7 @@ coverage: virtualenv
 	. ${VENV_BIN}/activate && poetry run coverage report
 
 lint: virtualenv
+	. ${VENV_BIN}/activate && poetry run ruff "${MODULE}" tests
 	. ${VENV_BIN}/activate && poetry run flake8
 	. ${VENV_BIN}/activate && poetry run pycodestyle "${MODULE}" tests
 	. ${VENV_BIN}/activate && poetry run pylint "${MODULE}" tests
