@@ -4,6 +4,7 @@ VERSION := $(shell awk '/^version =/ {print $$3}' pyproject.toml)
 
 VENV_DIR := ${HOME}/.venv/${MODULE}
 VENV_BIN := ${VENV_DIR}/bin
+PYTHON ?= python3
 PIP := ${VENV_DIR}/bin/pip
 
 SPHINX_FLAGS := -b html ./docs public
@@ -12,7 +13,7 @@ SPHINX_WEBSITE_FLAGS := --port 8100 --host localhost --open-browser --watch ${MO
 all: unittest coverage lint
 
 ${VENV_BIN}:
-	python3 -m venv ${VENV_DIR}
+	${PYTHON} -m venv ${VENV_DIR}
 	. ${VENV_BIN}/activate; pip install poetry
 	. ${VENV_BIN}/activate; poetry install
 virtualenv: ${VENV_BIN}
@@ -49,7 +50,7 @@ lint: virtualenv
 	. ${VENV_BIN}/activate && poetry run ruff "${MODULE}" tests
 	. ${VENV_BIN}/activate && poetry run flake8
 	. ${VENV_BIN}/activate && poetry run pycodestyle "${MODULE}" tests
-	. ${VENV_BIN}/activate && poetry run pylint "${MODULE}" tests
+	. ${VENV_BIN}/activate && poetry run mypy "${MODULE}" tests
 
 publish: virtualenv clean build
 	. ${VENV_BIN}/activate && poetry publish
